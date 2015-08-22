@@ -21,13 +21,7 @@ import android.content.Context;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
-import com.mendhak.gpslogger.senders.dropbox.DropBoxHelper;
-import com.mendhak.gpslogger.senders.email.AutoEmailHelper;
-import com.mendhak.gpslogger.senders.ftp.FtpHelper;
-import com.mendhak.gpslogger.senders.gdocs.GDocsHelper;
 import com.mendhak.gpslogger.senders.opengts.OpenGTSHelper;
-import com.mendhak.gpslogger.senders.osm.OSMHelper;
-import com.mendhak.gpslogger.senders.owncloud.OwnCloudHelper;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
@@ -40,32 +34,8 @@ public class FileSenderFactory {
 
     private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(FileSenderFactory.class.getSimpleName());
 
-    public static IFileSender GetOsmSender(Context applicationContext) {
-        return new OSMHelper(applicationContext);
-    }
-
-    public static IFileSender GetDropBoxSender(Context applicationContext) {
-        return new DropBoxHelper(applicationContext);
-    }
-
-    public static IFileSender GetGDocsSender(Context applicationContext) {
-        return new GDocsHelper(applicationContext);
-    }
-
-    public static IFileSender GetEmailSender(Context applicationContext) {
-        return new AutoEmailHelper();
-    }
-
     public static IFileSender GetOpenGTSSender(Context applicationContext) {
         return new OpenGTSHelper();
-    }
-
-    public static IFileSender GetFtpSender(Context applicationContext) {
-        return new FtpHelper();
-    }
-
-    public static IFileSender GetOwnCloudSender(Context applicationContext) {
-        return new OwnCloudHelper();
     }
 
     public static void SendFiles(Context applicationContext, final String fileToSend) {
@@ -132,36 +102,9 @@ public class FileSenderFactory {
     private static List<IFileSender> GetFileSenders(Context applicationContext) {
         List<IFileSender> senders = new ArrayList<IFileSender>();
 
-        if (AppSettings.isGDocsAutoSendEnabled() && GDocsHelper.IsLinked(applicationContext)) {
-            senders.add(new GDocsHelper(applicationContext));
-        }
-
-        if (AppSettings.isOsmAutoSendEnabled() && OSMHelper.IsOsmAuthorized(applicationContext)) {
-            senders.add(new OSMHelper(applicationContext));
-        }
-
-        if (AppSettings.isEmailAutoSendEnabled()) {
-            senders.add(new AutoEmailHelper());
-        }
-
-        DropBoxHelper dh = new DropBoxHelper(applicationContext);
-
-        if (AppSettings.isDropboxAutoSendEnabled() &&  dh.IsLinked()) {
-            senders.add(dh);
-        }
-
         if (AppSettings.isOpenGtsAutoSendEnabled()) {
             senders.add(new OpenGTSHelper());
         }
-
-        if (AppSettings.isFtpAutoSendEnabled()) {
-            senders.add(new FtpHelper());
-        }
-
-        if (AppSettings.isOwnCloudAutoSendEnabled()) {
-            senders.add(new OwnCloudHelper());
-        }
-
         return senders;
 
     }

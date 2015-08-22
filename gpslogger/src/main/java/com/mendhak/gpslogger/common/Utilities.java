@@ -44,9 +44,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.slf4j.GpsRollingFileAppender;
 import com.mendhak.gpslogger.common.slf4j.SessionLogcatAppender;
-import com.mendhak.gpslogger.senders.dropbox.DropBoxHelper;
-import com.mendhak.gpslogger.senders.ftp.FtpHelper;
-import com.mendhak.gpslogger.senders.owncloud.OwnCloudHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -569,31 +566,6 @@ public class Utilities {
                 && AppSettings.getOpenGTSDeviceId().length() > 0;
     }
 
-
-    public static boolean IsFtpSetup() {
-
-        FtpHelper helper = new FtpHelper();
-
-        return helper.ValidSettings(AppSettings.getFtpServerName(), AppSettings.getFtpUsername(),
-                AppSettings.getFtpPassword(), AppSettings.getFtpPort(), AppSettings.FtpUseFtps(),
-                AppSettings.getFtpProtocol(), AppSettings.FtpImplicit());
-    }
-
-
-    public static boolean IsOwnCloudSetup() {
-
-        OwnCloudHelper helper = new OwnCloudHelper();
-
-        return helper.ValidSettings(AppSettings.getOwnCloudServerName(),
-                AppSettings.getOwnCloudUsername(),
-                AppSettings.getOwnCloudPassword(),
-                AppSettings.getOwnCloudDirectory());
-    }
-
-    public static boolean IsDropBoxSetup(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.contains(DropBoxHelper.ACCESS_KEY_NAME) && prefs.contains(DropBoxHelper.ACCESS_SECRET_NAME);
-    }
 
     /**
      * Uses the Haversine formula to calculate the distnace between to lat-long coordinates

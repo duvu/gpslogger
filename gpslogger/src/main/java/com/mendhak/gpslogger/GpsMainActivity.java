@@ -75,10 +75,6 @@ import com.mendhak.gpslogger.common.events.UploadEvents;
 import com.mendhak.gpslogger.common.slf4j.SessionLogcatAppender;
 import com.mendhak.gpslogger.senders.FileSenderFactory;
 import com.mendhak.gpslogger.senders.IFileSender;
-import com.mendhak.gpslogger.senders.dropbox.DropBoxHelper;
-import com.mendhak.gpslogger.senders.gdocs.GDocsHelper;
-import com.mendhak.gpslogger.senders.osm.OSMHelper;
-import com.mendhak.gpslogger.senders.owncloud.OwnCloudHelper;
 import com.mendhak.gpslogger.views.*;
 
 import org.slf4j.LoggerFactory;
@@ -282,12 +278,6 @@ public class GpsMainActivity extends ActionBarActivity
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-            //Deprecated in Lollipop but required if targeting 4.x
-            SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.gps_main_views, R.layout.spinner_dropdown_item);
-            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-            getSupportActionBar().setListNavigationCallbacks(spinnerAdapter, this);
-            getSupportActionBar().setSelectedNavigationItem(GetUserSelectedNavigationItem());
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -341,13 +331,6 @@ public class GpsMainActivity extends ActionBarActivity
         );
 
         drawer.addItem(new DrawerItem()
-                        .setId(1)
-                        .setImage(getResources().getDrawable(R.drawable.loggingsettings))
-                        .setTextPrimary(getString(R.string.pref_logging_title))
-                        .setTextSecondary(getString(R.string.pref_logging_summary))
-        );
-
-        drawer.addItem(new DrawerItem()
                         .setId(2)
                         .setImage(getResources().getDrawable(R.drawable.performance))
                         .setTextPrimary(getString(R.string.pref_performance_title))
@@ -357,54 +340,11 @@ public class GpsMainActivity extends ActionBarActivity
 
         drawer.addDivider();
 
-
-        /*drawer.addItem(new DrawerItem()
-                .setId(3)
-                .setImage(getResources().getDrawable(R.drawable.autosend))
-                .setTextPrimary(getString(R.string.pref_autosend_title))
-                .setTextSecondary(getString(R.string.pref_autosend_summary)));
-
-        drawer.addItem(new DrawerItem()
-                        .setId(4)
-                        .setImage(getResources().getDrawable(R.drawable.googledrive))
-                        .setTextPrimary(getString(R.string.gdocs_setup_title))
-        );
-
-        drawer.addItem(new DrawerItem()
-                        .setId(5)
-                        .setImage(getResources().getDrawable(R.drawable.dropbox))
-                        .setTextPrimary(getString(R.string.dropbox_setup_title))
-        );
-
-        drawer.addItem(new DrawerItem()
-                        .setId(6)
-                        .setImage(getResources().getDrawable(R.drawable.email))
-                        .setTextPrimary(getString(R.string.autoemail_title))
-        );
-
-        drawer.addItem(new DrawerItem()
-                        .setId(7)
-                        .setImage(getResources().getDrawable(R.drawable.ftp))
-                        .setTextPrimary(getString(R.string.autoftp_setup_title))
-        );*/
-
         drawer.addItem(new DrawerItem()
                         .setId(8)
                         .setImage(getResources().getDrawable(R.drawable.opengts))
                         .setTextPrimary(getString(R.string.opengts_setup_title))
         );
-
-        /*drawer.addItem(new DrawerItem()
-                        .setId(9)
-                        .setImage(getResources().getDrawable(R.drawable.openstreetmap))
-                        .setTextPrimary(getString(R.string.osm_setup_title))
-        );
-
-        drawer.addItem(new DrawerItem()
-                        .setId(10)
-                        .setImage(getResources().getDrawable(R.drawable.owncloud))
-                        .setTextPrimary(getString(R.string.owncloud_setup_title))
-        );*/
 
         drawer.addDivider();
 
@@ -431,9 +371,6 @@ public class GpsMainActivity extends ActionBarActivity
                     case 1000:
                         LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.GENERAL);
                         break;
-                    case 1:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.LOGGING);
-                        break;
                     case 2:
                         LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.PERFORMANCE);
                         break;
@@ -441,8 +378,8 @@ public class GpsMainActivity extends ActionBarActivity
                         LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OPENGTS);
                         break;
                     case 11:
-                        Intent faqtivity = new Intent(getApplicationContext(), Faqtivity.class);
-                        startActivity(faqtivity);
+                        //Intent faqtivity = new Intent(getApplicationContext(), Faqtivity.class);
+                        //startActivity(faqtivity);
                         break;
                     case 12:
                         EventBus.getDefault().post(new CommandEvents.RequestStartStop(false));
@@ -456,8 +393,8 @@ public class GpsMainActivity extends ActionBarActivity
         helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent faqtivity = new Intent(getApplicationContext(), Faqtivity.class);
-                startActivity(faqtivity);
+                //Intent faqtivity = new Intent(getApplicationContext(), Faqtivity.class);
+                //startActivity(faqtivity);
             }
         });
 
@@ -491,16 +428,6 @@ public class GpsMainActivity extends ActionBarActivity
             case 0:
                 transaction.replace(R.id.container, GpsSimpleViewFragment.newInstance());
                 break;
-            case 1:
-                transaction.replace(R.id.container, GpsDetailedViewFragment.newInstance());
-                break;
-            case 2:
-                transaction.replace(R.id.container, GpsBigViewFragment.newInstance());
-                break;
-            case 3:
-                transaction.replace(R.id.container, GpsLogViewFragment.newInstance());
-                break;
-
         }
         transaction.commitAllowingStateLoss();
     }
@@ -641,46 +568,14 @@ public class GpsMainActivity extends ActionBarActivity
             case R.id.mnuShare:
                 Share();
                 return true;
-            case R.id.mnuOSM:
-                UploadToOpenStreetMap();
-                return true;
-            case R.id.mnuDropBox:
-                UploadToDropBox();
-                return true;
-            case R.id.mnuGDocs:
-                UploadToGoogleDocs();
-                return true;
             case R.id.mnuOpenGTS:
                 SendToOpenGTS();
-                return true;
-            case R.id.mnuFtp:
-                SendToFtp();
-                return true;
-            case R.id.mnuEmail:
-                SelectAndEmailFile();
-                return true;
-            case R.id.mnuAutoSendNow:
-                ForceAutoSendNow();
-            case R.id.mnuOwnCloud:
-                UploadToOwnCloud();
                 return true;
             default:
                 return true;
         }
     }
 
-
-    private void ForceAutoSendNow() {
-        tracer.debug("User forced an auto send");
-
-        if (AppSettings.isAutoSendEnabled()) {
-            Utilities.ShowProgress(this, getString(R.string.autosend_sending),getString(R.string.please_wait));
-            EventBus.getDefault().post(new CommandEvents.AutoSend(null));
-
-        } else {
-            LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.UPLOAD);
-        }
-    }
 
     private void LogSinglePoint() {
         EventBus.getDefault().post(new CommandEvents.LogOnce());
@@ -719,72 +614,12 @@ public class GpsMainActivity extends ActionBarActivity
         alertDialog.show();
     }
 
-
-    private void UploadToOpenStreetMap() {
-        if (!OSMHelper.IsOsmAuthorized(getApplicationContext())) {
-            LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OSM);
-            return;
-        }
-
-        ShowFileListDialog(FileSenderFactory.GetOsmSender(getApplicationContext()));
-    }
-
-    private void UploadToDropBox() {
-        final DropBoxHelper dropBoxHelper = new DropBoxHelper(getApplicationContext());
-
-        if (!dropBoxHelper.IsLinked()) {
-            LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.DROPBOX);
-            return;
-        }
-
-        ShowFileListDialog(FileSenderFactory.GetDropBoxSender(getApplication()));
-    }
-
-
-
-    private void UploadToOwnCloud() {
-        final OwnCloudHelper ownCloudHelper = new OwnCloudHelper();
-
-        if (!Utilities.IsOwnCloudSetup()) {
-            LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OWNCLOUD);
-            return;
-        }
-
-        ShowFileListDialog(FileSenderFactory.GetOwnCloudSender(getApplication()));
-    }
-
     private void SendToOpenGTS() {
         if (!Utilities.IsOpenGTSSetup()) {
             LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OPENGTS);
         } else {
             IFileSender fs = FileSenderFactory.GetOpenGTSSender(getApplicationContext());
             ShowFileListDialog(fs);
-        }
-    }
-
-    private void UploadToGoogleDocs() {
-        if (!GDocsHelper.IsLinked(getApplicationContext())) {
-            LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.GDOCS);
-            return;
-        }
-
-        ShowFileListDialog(FileSenderFactory.GetGDocsSender(getApplicationContext()));
-    }
-
-    private void SendToFtp() {
-        if (!Utilities.IsFtpSetup()) {
-            LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.FTP);
-        } else {
-            IFileSender fs = FileSenderFactory.GetFtpSender(getApplicationContext());
-            ShowFileListDialog(fs);
-        }
-    }
-
-    private void SelectAndEmailFile() {
-        if (!Utilities.IsEmailSetup()) {
-            LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.EMAIL);
-        } else {
-            ShowFileListDialog(FileSenderFactory.GetEmailSender(this));
         }
     }
 

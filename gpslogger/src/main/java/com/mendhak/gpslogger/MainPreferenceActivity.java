@@ -24,17 +24,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import com.mendhak.gpslogger.common.PreferenceValidationFragment;
 import com.mendhak.gpslogger.common.Utilities;
-import com.mendhak.gpslogger.senders.dropbox.DropboxAuthorizationFragment;
-import com.mendhak.gpslogger.senders.email.AutoEmailFragment;
-import com.mendhak.gpslogger.senders.ftp.AutoFtpFragment;
-import com.mendhak.gpslogger.senders.gdocs.GDocsSettingsFragment;
 import com.mendhak.gpslogger.senders.opengts.OpenGTSFragment;
-import com.mendhak.gpslogger.senders.osm.OSMAuthorizationFragment;
-import com.mendhak.gpslogger.senders.owncloud.OwnCloudSettingsFragment;
 import com.mendhak.gpslogger.settings.GeneralSettingsFragment;
-import com.mendhak.gpslogger.settings.LoggingSettingsFragment;
 import com.mendhak.gpslogger.settings.PerformanceSettingsFragment;
-import com.mendhak.gpslogger.settings.UploadSettingsFragment;
+
 import org.slf4j.LoggerFactory;
 
 
@@ -69,10 +62,6 @@ public class MainPreferenceActivity extends ActionBarActivity {
             case PreferenceConstants.GENERAL:
                 setTitle(R.string.settings_screen_name);
                 preferenceFragment = new GeneralSettingsFragment();
-                break;
-            case PreferenceConstants.LOGGING:
-                setTitle(R.string.pref_logging_title);
-                preferenceFragment = new LoggingSettingsFragment();
                 break;
             case PreferenceConstants.PERFORMANCE:
                 setTitle(R.string.pref_performance_title);

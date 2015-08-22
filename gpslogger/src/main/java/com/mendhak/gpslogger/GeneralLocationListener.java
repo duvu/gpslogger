@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 
-class GeneralLocationListener implements LocationListener, GpsStatus.Listener, GpsStatus.NmeaListener {
+class GeneralLocationListener implements LocationListener, GpsStatus.Listener {
 
     private static String listenerName;
     private static GpsLoggingService loggingService;
@@ -137,52 +137,6 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener, G
                 tracer.info(loggingService.getString(R.string.gps_stopped));
                 break;
 
-        }
-    }
-
-    @Override
-    public void onNmeaReceived(long timestamp, String nmeaSentence) {
-        loggingService.OnNmeaSentence(timestamp, nmeaSentence);
-
-        if(Utilities.IsNullOrEmpty(nmeaSentence)){
-            return;
-        }
-
-        String[] nmeaParts = nmeaSentence.split(",");
-
-        if (nmeaParts[0].equalsIgnoreCase("$GPGSA")) {
-
-            if (nmeaParts.length > 15 && !Utilities.IsNullOrEmpty(nmeaParts[15])) {
-                this.latestPdop = nmeaParts[15];
-            }
-
-            if (nmeaParts.length > 16 &&!Utilities.IsNullOrEmpty(nmeaParts[16])) {
-                this.latestHdop = nmeaParts[16];
-            }
-
-            if (nmeaParts.length > 17 &&!Utilities.IsNullOrEmpty(nmeaParts[17]) && !nmeaParts[17].startsWith("*")) {
-
-                this.latestVdop = nmeaParts[17].split("\\*")[0];
-            }
-        }
-
-
-        if (nmeaParts[0].equalsIgnoreCase("$GPGGA")) {
-            if (nmeaParts.length > 8 &&!Utilities.IsNullOrEmpty(nmeaParts[8])) {
-                this.latestHdop = nmeaParts[8];
-            }
-
-            if (nmeaParts.length > 11 &&!Utilities.IsNullOrEmpty(nmeaParts[11])) {
-                this.geoIdHeight = nmeaParts[11];
-            }
-
-            if (nmeaParts.length > 13 &&!Utilities.IsNullOrEmpty(nmeaParts[13])) {
-                this.ageOfDgpsData = nmeaParts[13];
-            }
-
-            if (nmeaParts.length > 14 &&!Utilities.IsNullOrEmpty(nmeaParts[14]) && !nmeaParts[14].startsWith("*")) {
-                this.dgpsId = nmeaParts[14].split("\\*")[0];
-            }
         }
     }
 }

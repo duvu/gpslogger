@@ -45,7 +45,6 @@ import com.mendhak.gpslogger.common.events.CommandEvents;
 import com.mendhak.gpslogger.common.events.ServiceEvents;
 import com.mendhak.gpslogger.common.slf4j.SessionLogcatAppender;
 import com.mendhak.gpslogger.loggers.FileLoggerFactory;
-import com.mendhak.gpslogger.loggers.nmea.NmeaFileLogger;
 import com.mendhak.gpslogger.senders.AlarmReceiver;
 import com.mendhak.gpslogger.senders.FileSenderFactory;
 import de.greenrobot.event.EventBus;
@@ -569,7 +568,6 @@ public class GpsLoggingService extends Service  {
             // gps satellite based
             gpsLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, gpsLocationListener);
             gpsLocationManager.addGpsStatusListener(gpsLocationListener);
-            gpsLocationManager.addNmeaListener(gpsLocationListener);
 
             Session.setUsingGps(true);
             startAbsoluteTimer();
@@ -941,14 +939,6 @@ public class GpsLoggingService extends Service  {
     void SetSatelliteInfo(int count) {
         Session.setSatelliteCount(count);
         EventBus.getDefault().post(new ServiceEvents.SatelliteCount(count));
-    }
-
-    public void OnNmeaSentence(long timestamp, String nmeaSentence) {
-
-        if (AppSettings.shouldLogToNmea()) {
-            NmeaFileLogger nmeaLogger = new NmeaFileLogger(Session.getCurrentFileName());
-            nmeaLogger.Write(timestamp, nmeaSentence);
-        }
     }
 
     /**

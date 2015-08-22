@@ -22,7 +22,6 @@ import android.location.Location;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
-import com.mendhak.gpslogger.loggers.customurl.CustomUrlLogger;
 import com.mendhak.gpslogger.loggers.opengts.OpenGTSLogger;
 
 import java.io.File;
@@ -38,36 +37,9 @@ public class FileLoggerFactory {
             return loggers;
         }
 
-        File gpxFolder = new File(AppSettings.getGpsLoggerFolder());
-        if (!gpxFolder.exists()) {
-            gpxFolder.mkdirs();
-        }
-
-        if (AppSettings.shouldLogToGpx()) {
-            File gpxFile = new File(gpxFolder.getPath(), Session.getCurrentFileName() + ".gpx");
-            loggers.add(new Gpx10FileLogger(gpxFile, Session.shouldAddNewTrackSegment(), Session.getSatelliteCount()));
-        }
-
-        if (AppSettings.shouldLogToKml()) {
-            File kmlFile = new File(gpxFolder.getPath(), Session.getCurrentFileName() + ".kml");
-            loggers.add(new Kml22FileLogger(kmlFile, Session.shouldAddNewTrackSegment()));
-        }
-
-        if (AppSettings.shouldLogToPlainText()) {
-            File file = new File(gpxFolder.getPath(), Session.getCurrentFileName() + ".txt");
-            loggers.add(new PlainTextFileLogger(file));
-        }
-
         if (AppSettings.shouldLogToOpenGTS()) {
             loggers.add(new OpenGTSLogger(context));
         }
-
-        if (AppSettings.shouldLogToCustomUrl()) {
-            float batteryLevel = Utilities.GetBatteryLevel(context);
-            String androidId = Utilities.GetAndroidId(context);
-            loggers.add(new CustomUrlLogger(AppSettings.getCustomLoggingUrl(), Session.getSatelliteCount(), batteryLevel, androidId));
-        }
-
 
         return loggers;
     }
