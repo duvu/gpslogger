@@ -32,7 +32,7 @@
         android:defaultValue="false"/>
 
 
-    <Preference android:key="about_version_info"></Preference>
+    <!--<Preference android:key="about_version_info"></Preference>
 
     <Preference
         android:key="gpsvisualizer_link"
@@ -56,7 +56,7 @@
         android:title="@string/donate_bitcoin"
         android:icon="@drawable/bitcoin" >
 
-        </Preference>
+        </Preference>-->
 
 
 </PreferenceScreen>

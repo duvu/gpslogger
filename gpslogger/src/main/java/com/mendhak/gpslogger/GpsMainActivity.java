@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -61,7 +62,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.heinrichreimersoftware.materialdrawer.DrawerView;
+import com.heinrichreimersoftware.materialdrawer.adapter.DrawerProfileAdapter;
 import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
+import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.EventBusHook;
 import com.mendhak.gpslogger.common.Session;
@@ -324,7 +327,12 @@ public class GpsMainActivity extends ActionBarActivity
         drawerLayout.setDrawerListener(drawerToggle);
         drawerLayout.closeDrawer(drawer);
 
-        drawer.addDivider();
+        DrawerProfile profile = new DrawerProfile();
+        profile.setRoundedAvatar((BitmapDrawable) getResources().getDrawable(R.drawable.bitcoin));
+        profile.setName("Du Quang Vu");
+        profile.setDescription("General manager");
+        drawer.addProfile(profile);
+
         drawer.addItem(new DrawerItem()
                         .setId(1000)
                         .setImage(getResources().getDrawable(R.drawable.settings))
@@ -350,7 +358,7 @@ public class GpsMainActivity extends ActionBarActivity
         drawer.addDivider();
 
 
-        drawer.addItem(new DrawerItem()
+        /*drawer.addItem(new DrawerItem()
                 .setId(3)
                 .setImage(getResources().getDrawable(R.drawable.autosend))
                 .setTextPrimary(getString(R.string.pref_autosend_title))
@@ -378,7 +386,7 @@ public class GpsMainActivity extends ActionBarActivity
                         .setId(7)
                         .setImage(getResources().getDrawable(R.drawable.ftp))
                         .setTextPrimary(getString(R.string.autoftp_setup_title))
-        );
+        );*/
 
         drawer.addItem(new DrawerItem()
                         .setId(8)
@@ -386,7 +394,7 @@ public class GpsMainActivity extends ActionBarActivity
                         .setTextPrimary(getString(R.string.opengts_setup_title))
         );
 
-        drawer.addItem(new DrawerItem()
+        /*drawer.addItem(new DrawerItem()
                         .setId(9)
                         .setImage(getResources().getDrawable(R.drawable.openstreetmap))
                         .setTextPrimary(getString(R.string.osm_setup_title))
@@ -396,7 +404,7 @@ public class GpsMainActivity extends ActionBarActivity
                         .setId(10)
                         .setImage(getResources().getDrawable(R.drawable.owncloud))
                         .setTextPrimary(getString(R.string.owncloud_setup_title))
-        );
+        );*/
 
         drawer.addDivider();
 
@@ -429,29 +437,8 @@ public class GpsMainActivity extends ActionBarActivity
                     case 2:
                         LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.PERFORMANCE);
                         break;
-                    case 3:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.UPLOAD);
-                        break;
-                    case 4:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.GDOCS);
-                        break;
-                    case 5:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.DROPBOX);
-                        break;
-                    case 6:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.EMAIL);
-                        break;
-                    case 7:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.FTP);
-                        break;
                     case 8:
                         LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OPENGTS);
-                        break;
-                    case 9:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OSM);
-                        break;
-                    case 10:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OWNCLOUD);
                         break;
                     case 11:
                         Intent faqtivity = new Intent(getApplicationContext(), Faqtivity.class);

@@ -65,12 +65,6 @@ public class MainPreferenceActivity extends ActionBarActivity {
            whichFragment = getIntent().getExtras().getString("preference_fragment");
         }
 
-        //If OpenStreetMap has returned with OAuth token
-        if(getIntent().getData() != null) {
-            tracer.debug("OSM Authorization returned: " + getIntent().getData().getQuery());
-            whichFragment = PreferenceConstants.OSM;
-        }
-
         switch(whichFragment){
             case PreferenceConstants.GENERAL:
                 setTitle(R.string.settings_screen_name);
@@ -84,37 +78,9 @@ public class MainPreferenceActivity extends ActionBarActivity {
                 setTitle(R.string.pref_performance_title);
                 preferenceFragment = new PerformanceSettingsFragment();
                 break;
-            case PreferenceConstants.UPLOAD:
-                setTitle(R.string.title_drawer_uploadsettings);
-                preferenceFragment = new UploadSettingsFragment();
-                break;
-            case PreferenceConstants.FTP:
-                setTitle(R.string.autoftp_setup_title);
-                preferenceFragment = new AutoFtpFragment();
-                break;
-            case PreferenceConstants.EMAIL:
-                setTitle(R.string.autoemail_title);
-                preferenceFragment = new AutoEmailFragment();
-                break;
             case PreferenceConstants.OPENGTS:
                 setTitle(R.string.opengts_setup_title);
                 preferenceFragment = new OpenGTSFragment();
-                break;
-            case PreferenceConstants.GDOCS:
-                setTitle(R.string.gdocs_setup_title);
-                preferenceFragment = new GDocsSettingsFragment();
-                break;
-            case PreferenceConstants.DROPBOX:
-                setTitle(R.string.dropbox_setup_title);
-                preferenceFragment = new DropboxAuthorizationFragment();
-                break;
-            case PreferenceConstants.OSM:
-                setTitle(R.string.osm_setup_title);
-                preferenceFragment = new OSMAuthorizationFragment();
-                break;
-            case PreferenceConstants.OWNCLOUD:
-                setTitle(R.string.owncloud_setup_title);
-                preferenceFragment = new OwnCloudSettingsFragment();
                 break;
         }
 

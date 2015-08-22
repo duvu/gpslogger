@@ -50,7 +50,7 @@ public class GeneralSettingsFragment extends PreferenceFragment implements Prefe
 
         Preference enableDisablePref = findPreference("enableDisableGps");
         enableDisablePref.setOnPreferenceClickListener(this);
-
+/*
         Preference gpsvisualizerPref = findPreference("gpsvisualizer_link");
         gpsvisualizerPref.setOnPreferenceClickListener(this);
 
@@ -63,7 +63,7 @@ public class GeneralSettingsFragment extends PreferenceFragment implements Prefe
             aboutInfo.setTitle("GPSLogger version " + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
             aboutInfo.setOnPreferenceClickListener(this);
         } catch (PackageManager.NameNotFoundException e) {
-        }
+        }*/
     }
 
 
@@ -75,7 +75,7 @@ public class GeneralSettingsFragment extends PreferenceFragment implements Prefe
             return true;
         }
 
-        if(preference.getKey().equalsIgnoreCase("bitcoindonate_link")){
+        /*if(preference.getKey().equalsIgnoreCase("bitcoindonate_link")){
 
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("bitcoin:1DhQCEkzEJkEQRFVLbGqv6Qksoc4aGpuAS"));
             if( intent.resolveActivity(getActivity().getPackageManager()) == null){
@@ -87,9 +87,9 @@ public class GeneralSettingsFragment extends PreferenceFragment implements Prefe
 
             return true;
 
-        }
+        }*/
 
-        if(preference.getKey().equalsIgnoreCase("gpsvisualizer_link")){
+        /*if(preference.getKey().equalsIgnoreCase("gpsvisualizer_link")){
             Intent intent = new Intent(Intent.ACTION_VIEW,
                     Uri.parse("market://details?id=com.mendhak.gpsvisualizer"));
             startActivity(intent);
@@ -104,7 +104,7 @@ public class GeneralSettingsFragment extends PreferenceFragment implements Prefe
                 startActivity(intent);
             }
 
-        }
+        }*/
         return false;
     }
 }
