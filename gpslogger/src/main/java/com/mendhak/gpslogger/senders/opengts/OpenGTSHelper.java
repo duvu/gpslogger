@@ -18,22 +18,21 @@
 package com.mendhak.gpslogger.senders.opengts;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.SerializableLocation;
 import com.mendhak.gpslogger.loggers.opengts.OpenGTSJob;
 import com.mendhak.gpslogger.senders.GpxReader;
 import com.mendhak.gpslogger.senders.IFileSender;
 import com.path.android.jobqueue.JobManager;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
 public class OpenGTSHelper implements IFileSender {
-
-    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OpenGTSHelper.class.getSimpleName());
-
+    private static final String TAG = "OpenGTSHelper";
     public OpenGTSHelper() {
     }
 
@@ -43,7 +42,7 @@ public class OpenGTSHelper implements IFileSender {
         for (File f : files) {
             if (f.getName().endsWith(".gpx")) {
                 List<SerializableLocation> locations = getLocationsFromGPX(f);
-                tracer.debug(locations.size() + " points were read from " + f.getName());
+                Log.d(TAG, locations.size() + " points were read from " + f.getName());
 
                 if (locations.size() > 0) {
 
@@ -66,7 +65,7 @@ public class OpenGTSHelper implements IFileSender {
         try {
             locations = GpxReader.getPoints(f);
         } catch (Exception e) {
-            tracer.error("OpenGTSHelper.getLocationsFromGPX", e);
+            Log.e(TAG, "OpenGTSHelper.getLocationsFromGPX", e);
         }
         return locations;
     }

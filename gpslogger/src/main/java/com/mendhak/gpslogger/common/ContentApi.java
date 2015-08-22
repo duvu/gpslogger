@@ -7,12 +7,10 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import org.slf4j.LoggerFactory;
+import android.util.Log;
 
 public class ContentApi extends ContentProvider {
-
-    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(ContentApi.class.getSimpleName());
-
+    private static final String TAG = "ContentApi";
     @Override
     public boolean onCreate() {
         return false;
@@ -22,7 +20,7 @@ public class ContentApi extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
         String queryType = uri.getPathSegments().get(0);
-        tracer.debug(queryType);
+        Log.d(TAG, queryType);
         String result = "";
 
         switch(queryType){
@@ -36,7 +34,7 @@ public class ContentApi extends ContentProvider {
         }
 
 
-        tracer.debug(result);
+        Log.d(TAG, result);
         MatrixCursor matrixCursor = new MatrixCursor(new String[] { "Column1" });
 
         matrixCursor.newRow().add(result);

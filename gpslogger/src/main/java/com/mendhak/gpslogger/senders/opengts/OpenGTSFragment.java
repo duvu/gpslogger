@@ -28,7 +28,6 @@ import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.PreferenceValidationFragment;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.views.component.CustomSwitchPreference;
-import org.slf4j.LoggerFactory;
 
 public class OpenGTSFragment extends PreferenceValidationFragment implements
         OnPreferenceChangeListener,

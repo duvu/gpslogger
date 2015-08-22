@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Utilities;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 

@@ -22,6 +22,7 @@ import android.graphics.*;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,15 +39,11 @@ import com.mendhak.gpslogger.common.EventBusHook;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.common.events.ServiceEvents;
-import org.slf4j.LoggerFactory;
 import java.text.NumberFormat;
 
 public class GpsSimpleViewFragment extends GenericViewFragment implements View.OnClickListener {
-
+    private static final String TAG = "GpsSimpleViewFragment";
     Context context;
-    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(GpsSimpleViewFragment.class.getSimpleName());
-
-
     private View rootView;
     private ActionProcessButton actionButton;
 
@@ -465,7 +462,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
 
     public void OnWaitingForLocation(boolean inProgress) {
 
-        tracer.debug(inProgress + "");
+        Log.i(TAG, inProgress + "");
 
         if(!Session.isStarted()){
             actionButton.setProgress(0);

@@ -18,11 +18,12 @@
 package com.mendhak.gpslogger.senders;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.Session;
 import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.senders.opengts.OpenGTSHelper;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -31,21 +32,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FileSenderFactory {
-
-    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(FileSenderFactory.class.getSimpleName());
-
+    private static final String TAG = "FileSenderFactory";
     public static IFileSender GetOpenGTSSender(Context applicationContext) {
         return new OpenGTSHelper();
     }
 
     public static void SendFiles(Context applicationContext, final String fileToSend) {
 
-        tracer.info("Sending file " + fileToSend);
+        Log.i(TAG, "Sending file " + fileToSend);
 
         File gpxFolder = new File(AppSettings.getGpsLoggerFolder());
 
         if (Utilities.GetFilesInFolder(gpxFolder).length < 1) {
-            tracer.warn("No files found to send.");
+            Log.w(TAG, "No files found to send.");
             return;
         }
 
@@ -59,7 +58,7 @@ public class FileSenderFactory {
         List<File> zipFiles = new ArrayList<>();
 
         if (files.size() == 0) {
-            tracer.warn("No files found to send after filtering.");
+            Log.w(TAG, "No files found to send after filtering.");
             return;
         }
 
@@ -71,7 +70,7 @@ public class FileSenderFactory {
                 filePaths.add(f.getAbsolutePath());
             }
 
-            tracer.info("Zipping file");
+            Log.i(TAG, "Zipping file");
             ZipHelper zh = new ZipHelper(filePaths.toArray(new String[filePaths.size()]), zipFile.getAbsolutePath());
             zh.Zip();
 
@@ -82,7 +81,7 @@ public class FileSenderFactory {
         List<IFileSender> senders = GetFileSenders(applicationContext);
 
         for (IFileSender sender : senders) {
-            tracer.debug("Sender: " + sender.getClass().getName());
+            Log.d(TAG, "Sender: " + sender.getClass().getName());
             //Special case for OSM Uploader
             if(!sender.accept(null, ".zip")){
                 sender.UploadFile(files);

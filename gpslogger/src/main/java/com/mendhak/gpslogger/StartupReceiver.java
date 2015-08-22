@@ -23,22 +23,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
 import com.mendhak.gpslogger.common.events.CommandEvents;
 import de.greenrobot.event.EventBus;
-import org.slf4j.LoggerFactory;
-
 
 public class StartupReceiver extends BroadcastReceiver {
-
-    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(StartupReceiver.class.getSimpleName());
-
+    private static final String TAG = "StartupReceiver";
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             boolean startImmediately = prefs.getBoolean("startonbootup", false);
 
-            tracer.info("Start on bootup - "  + String.valueOf(startImmediately));
+            Log.i(TAG, "Start on bootup - " + String.valueOf(startImmediately));
 
             if (startImmediately) {
 
@@ -48,7 +46,7 @@ public class StartupReceiver extends BroadcastReceiver {
                 context.startService(serviceIntent);
             }
         } catch (Exception ex) {
-            tracer.error("StartupReceiver", ex);
+            Log.e(TAG, "StartupReceiver", ex);
 
         }
 

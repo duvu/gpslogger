@@ -1,15 +1,16 @@
 package com.mendhak.gpslogger.loggers.opengts;
 
+import android.util.Log;
+
 import com.mendhak.gpslogger.common.OpenGTSClient;
 import com.mendhak.gpslogger.common.SerializableLocation;
 import com.mendhak.gpslogger.common.events.UploadEvents;
 import com.path.android.jobqueue.Job;
 import com.path.android.jobqueue.Params;
 import de.greenrobot.event.EventBus;
-import org.slf4j.LoggerFactory;
 
 public class OpenGTSJob extends Job {
-
+    private static final String TAG = "OpenGTSJob";
     String server;
     int port ;
     String accountName ;
@@ -17,7 +18,6 @@ public class OpenGTSJob extends Job {
     String deviceId ;
     String communication;
     SerializableLocation[] locations;
-    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(OpenGTSJob.class.getSimpleName());
 
     public OpenGTSJob(String server, int port, String accountName, String path, String deviceId, String communication, SerializableLocation[] locations){
         super(new Params(1).requireNetwork().persist());
@@ -39,7 +39,7 @@ public class OpenGTSJob extends Job {
     @Override
     public void onRun() throws Throwable {
 
-        tracer.debug("Running OpenGTS Job");
+        Log.d(TAG, "Running OpenGTS Job");
 
         OpenGTSClient openGTSClient = new OpenGTSClient(server, port, path);
         if(communication.equalsIgnoreCase("UDP")){
@@ -59,7 +59,7 @@ public class OpenGTSJob extends Job {
 
     @Override
     protected boolean shouldReRunOnThrowable(Throwable throwable) {
-        tracer.error("Could not send to OpenGTS", throwable);
+        Log.e(TAG, "Could not send to OpenGTS", throwable);
         return false;
     }
 }

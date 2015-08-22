@@ -17,19 +17,17 @@
 
 package com.mendhak.gpslogger.common;
 
-import com.mendhak.gpslogger.common.slf4j.SessionLogcatAppender;
-import org.slf4j.LoggerFactory;
+import android.util.Log;
 
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class RejectionHandler implements RejectedExecutionHandler {
 
-    private static final org.slf4j.Logger tracer = LoggerFactory.getLogger(RejectionHandler.class.getSimpleName());
-
+    private static final String TAG = "RejectionHandler";
     @Override
     public void rejectedExecution(Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
-        tracer.warn(SessionLogcatAppender.MARKER_INTERNAL, "Could not queue task, some points may not be logged.");
+        Log.w(TAG, "Could not queue task, some points may not be logged.");
     }
 }
 

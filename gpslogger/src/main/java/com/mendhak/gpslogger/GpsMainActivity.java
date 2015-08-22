@@ -33,17 +33,14 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.internal.view.menu.ActionMenuItemView;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,7 +63,6 @@ import com.mendhak.gpslogger.common.Utilities;
 import com.mendhak.gpslogger.common.events.CommandEvents;
 import com.mendhak.gpslogger.common.events.ServiceEvents;
 import com.mendhak.gpslogger.common.events.UploadEvents;
-import com.mendhak.gpslogger.common.slf4j.SessionLogcatAppender;
 import com.mendhak.gpslogger.senders.FileSenderFactory;
 import com.mendhak.gpslogger.senders.IFileSender;
 import com.mendhak.gpslogger.views.*;
@@ -81,8 +77,6 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -93,18 +87,15 @@ public class GpsMainActivity extends ActionBarActivity
         implements
         Toolbar.OnMenuItemClickListener,
         ActionBar.OnNavigationListener {
-
+    private static final String TAG = "GpsMainActivity";
     private static boolean userInvokedUpload;
     private static Intent serviceIntent;
     private Toolbar toolbar;
-    private org.slf4j.Logger tracer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Utilities.ConfigureLogbackDirectly(getApplicationContext());
-        tracer = LoggerFactory.getLogger(GpsMainActivity.class.getSimpleName());
         loadPresetProperties();
 
         setContentView(R.layout.activity_gps_main);
@@ -174,34 +165,6 @@ public class GpsMainActivity extends ActionBarActivity
     }
 
 
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            ToggleDrawer();
-        }
-        return super.onKeyUp(keyCode, event);
-    }
-
-    /**
-     * Handles the hardware back-button press
-     */
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && Session.isBoundToService()) {
-            StopAndUnbindServiceIfRequired();
-        }
-
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
-                ToggleDrawer();
-                return true;
-            }
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-
-
     private void loadPresetProperties() {
 
         //Either look for /<appfolder>/gpslogger.properties or /sdcard/gpslogger.properties
@@ -224,7 +187,7 @@ public class GpsMainActivity extends ActionBarActivity
                 SharedPreferences.Editor editor = prefs.edit();
 
                 String value = props.getProperty(key.toString());
-                tracer.info("Setting preset property: " + key.toString() + " to " + value.toString());
+                Log.i(TAG, "Setting preset property: " + key.toString() + " to " + value.toString());
 
                 if(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")){
                     editor.putBoolean(key.toString(), Boolean.parseBoolean(value));
@@ -249,7 +212,7 @@ public class GpsMainActivity extends ActionBarActivity
             }
 
         } catch (Exception e) {
-            tracer.error("Could not load preset properties", e);
+            Log.e(TAG, "Could not load preset properties", e);
         }
     }
 
@@ -275,13 +238,11 @@ public class GpsMainActivity extends ActionBarActivity
     }*/
 
     public void SetUpToolbar(){
-//        try{
-//            Toolbar toolbar = GetToolbar();
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        try{
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-/*
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -289,10 +250,8 @@ public class GpsMainActivity extends ActionBarActivity
         }
         catch(Exception ex){
             //http://stackoverflow.com/questions/26657348/appcompat-v7-v21-0-0-causing-crash-on-samsung-devices-with-android-v4-2-2
-            tracer.error("Thanks for this, Samsung", ex);
+            Log.e (TAG, "Thanks for this, Samsung", ex);
         }
-*/
-
     }
 
     public void SetUpNavigationDrawer() {
@@ -476,16 +435,6 @@ public class GpsMainActivity extends ActionBarActivity
         });
     }
 
-    public void ToggleDrawer(){
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
-            drawerLayout.closeDrawer(Gravity.LEFT);
-        }
-        else {
-            drawerLayout.openDrawer(Gravity.LEFT);
-        }
-    }
-
     private int GetUserSelectedNavigationItem(){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return sp.getInt("SPINNER_SELECTED_POSITION", 0);
@@ -632,7 +581,7 @@ public class GpsMainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        tracer.debug("Menu Item: " + String.valueOf(item.getTitle()));
+        Log.d(TAG, "Menu Item: " + String.valueOf(item.getTitle()));
 
         switch (id) {
             case R.id.mnuAnnotate:
@@ -742,7 +691,7 @@ public class GpsMainActivity extends ActionBarActivity
                             List<File> chosenFiles = new ArrayList<File>();
 
                             for (Object item : selectedItems) {
-                                tracer.info("Selected file to upload- " + files[Integer.valueOf(item.toString())]);
+                                Log.i(TAG, "Selected file to upload- " + files[Integer.valueOf(item.toString())]);
                                 chosenFiles.add(new File(gpxFolder, files[Integer.valueOf(item.toString())]));
                             }
 
@@ -847,7 +796,7 @@ public class GpsMainActivity extends ActionBarActivity
                 Utilities.MsgBox(getString(R.string.sorry), getString(R.string.no_files_found), this);
             }
         } catch (Exception ex) {
-            tracer.error("Sharing problem", ex);
+            Log.e (TAG, "Sharing problem", ex);
         }
     }
 
@@ -858,12 +807,12 @@ public class GpsMainActivity extends ActionBarActivity
     private final ServiceConnection gpsServiceConnection = new ServiceConnection() {
 
         public void onServiceDisconnected(ComponentName name) {
-            tracer.debug("Disconnected from GPSLoggingService from MainActivity");
+            Log.d(TAG, "Disconnected from GPSLoggingService from MainActivity");
             //loggingService = null;
         }
 
         public void onServiceConnected(ComponentName name, IBinder service) {
-            tracer.debug("Connected to GPSLoggingService from MainActivity");
+            Log.d(TAG, "Connected to GPSLoggingService from MainActivity");
             //loggingService = ((GpsLoggingService.GpsLoggingBinder) service).getService();
         }
     };
@@ -892,16 +841,16 @@ public class GpsMainActivity extends ActionBarActivity
                 unbindService(gpsServiceConnection);
                 Session.setBoundToService(false);
             } catch (Exception e) {
-                tracer.warn(SessionLogcatAppender.MARKER_INTERNAL, "Could not unbind service", e);
+                Log.w(TAG, "Could not unbind service", e);
             }
         }
 
         if (!Session.isStarted()) {
-            tracer.debug("Stopping the service");
+            Log.d(TAG, "Stopping the service");
             try {
                 stopService(serviceIntent);
             } catch (Exception e) {
-                tracer.error("Could not stop the service", e);
+                Log.e (TAG, "Could not stop the service", e);
             }
         }
     }
@@ -934,11 +883,11 @@ public class GpsMainActivity extends ActionBarActivity
 
     @EventBusHook
     public void onEventMainThread(UploadEvents.OpenGTS upload){
-        tracer.debug("Open GTS Event completed, success: " + upload.success);
+        Log.d(TAG, "Open GTS Event completed, success: " + upload.success);
         Utilities.HideProgress();
 
         if(!upload.success){
-            tracer.error(getString(R.string.opengts_setup_title)
+            Log.e (TAG, getString(R.string.opengts_setup_title)
                     + "-"
                     + getString(R.string.upload_failure));
 
@@ -951,11 +900,11 @@ public class GpsMainActivity extends ActionBarActivity
 
     @EventBusHook
     public void onEventMainThread(UploadEvents.AutoEmail upload){
-        tracer.debug("Auto Email Event completed, success: " + upload.success);
+        Log.d(TAG, "Auto Email Event completed, success: " + upload.success);
         Utilities.HideProgress();
 
         if(!upload.success){
-            tracer.error(getString(R.string.autoemail_title)
+            Log.e (TAG, getString(R.string.autoemail_title)
                     + "-"
                     + getString(R.string.upload_failure));
             if(userInvokedUpload){
@@ -967,11 +916,11 @@ public class GpsMainActivity extends ActionBarActivity
 
     @EventBusHook
     public void onEventMainThread(UploadEvents.OpenStreetMap upload){
-        tracer.debug("OSM Event completed, success: " + upload.success);
+        Log.d(TAG, "OSM Event completed, success: " + upload.success);
         Utilities.HideProgress();
 
         if(!upload.success){
-            tracer.error(getString(R.string.osm_setup_title)
+            Log.e (TAG, getString(R.string.osm_setup_title)
                     + "-"
                     + getString(R.string.upload_failure));
             if(userInvokedUpload){
@@ -983,11 +932,11 @@ public class GpsMainActivity extends ActionBarActivity
 
     @EventBusHook
     public void onEventMainThread(UploadEvents.Dropbox upload){
-        tracer.debug("Dropbox Event completed, success: " + upload.success);
+        Log.d(TAG, "Dropbox Event completed, success: " + upload.success);
         Utilities.HideProgress();
 
         if(!upload.success){
-            tracer.error(getString(R.string.dropbox_setup_title)
+            Log.e (TAG, getString(R.string.dropbox_setup_title)
                     + "-"
                     + getString(R.string.upload_failure));
             if(userInvokedUpload){
@@ -999,11 +948,11 @@ public class GpsMainActivity extends ActionBarActivity
 
     @EventBusHook
     public void onEventMainThread(UploadEvents.GDocs upload){
-        tracer.debug("GDocs Event completed, success: " + upload.success);
+        Log.d(TAG, "GDocs Event completed, success: " + upload.success);
         Utilities.HideProgress();
 
         if(!upload.success){
-            tracer.error(getString(R.string.gdocs_setup_title)
+            Log.e (TAG, getString(R.string.gdocs_setup_title)
                     + "-"
                     + getString(R.string.upload_failure));
             if(userInvokedUpload){
@@ -1015,11 +964,11 @@ public class GpsMainActivity extends ActionBarActivity
 
     @EventBusHook
     public void onEventMainThread(UploadEvents.Ftp upload){
-        tracer.debug("FTP Event completed, success: " + upload.success);
+        Log.d(TAG, "FTP Event completed, success: " + upload.success);
         Utilities.HideProgress();
 
         if(!upload.success){
-            tracer.error(getString(R.string.autoftp_setup_title)
+            Log.e (TAG, getString(R.string.autoftp_setup_title)
                     + "-"
                     + getString(R.string.upload_failure));
             if(userInvokedUpload){
@@ -1032,11 +981,11 @@ public class GpsMainActivity extends ActionBarActivity
 
     @EventBusHook
     public void onEventMainThread(UploadEvents.OwnCloud upload){
-        tracer.debug("OwnCloud Event completed, success: " + upload.success);
+        Log.d(TAG, "OwnCloud Event completed, success: " + upload.success);
         Utilities.HideProgress();
 
         if(!upload.success){
-            tracer.error(getString(R.string.owncloud_setup_title)
+            Log.e (TAG, getString(R.string.owncloud_setup_title)
                     + "-"
                     + getString(R.string.upload_failure));
 

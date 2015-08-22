@@ -28,32 +28,17 @@ import com.mendhak.gpslogger.senders.opengts.OpenGTSFragment;
 import com.mendhak.gpslogger.settings.GeneralSettingsFragment;
 import com.mendhak.gpslogger.settings.PerformanceSettingsFragment;
 
-import org.slf4j.LoggerFactory;
-
-
-
 public class MainPreferenceActivity extends ActionBarActivity {
-
-    private org.slf4j.Logger tracer;
-
     PreferenceFragment preferenceFragment = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_preferences);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        tracer = LoggerFactory.getLogger(MainPreferenceActivity.class.getSimpleName());
-
         String whichFragment = PreferenceConstants.GENERAL;
-
         if(getIntent().getExtras() != null) {
            whichFragment = getIntent().getExtras().getString("preference_fragment");
         }
