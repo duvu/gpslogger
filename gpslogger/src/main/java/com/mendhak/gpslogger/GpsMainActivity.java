@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,20 +50,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.heinrichreimersoftware.materialdrawer.DrawerView;
-import com.heinrichreimersoftware.materialdrawer.adapter.DrawerProfileAdapter;
-import com.heinrichreimersoftware.materialdrawer.structure.DrawerItem;
-import com.heinrichreimersoftware.materialdrawer.structure.DrawerProfile;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.EventBusHook;
 import com.mendhak.gpslogger.common.Session;
@@ -76,6 +70,16 @@ import com.mendhak.gpslogger.common.slf4j.SessionLogcatAppender;
 import com.mendhak.gpslogger.senders.FileSenderFactory;
 import com.mendhak.gpslogger.senders.IFileSender;
 import com.mendhak.gpslogger.views.*;
+import com.mikepenz.iconics.typeface.FontAwesome;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import org.slf4j.LoggerFactory;
 
@@ -92,7 +96,7 @@ public class GpsMainActivity extends ActionBarActivity
 
     private static boolean userInvokedUpload;
     private static Intent serviceIntent;
-    private ActionBarDrawerToggle drawerToggle;
+    private Toolbar toolbar;
     private org.slf4j.Logger tracer;
 
     @Override
@@ -101,7 +105,6 @@ public class GpsMainActivity extends ActionBarActivity
 
         Utilities.ConfigureLogbackDirectly(getApplicationContext());
         tracer = LoggerFactory.getLogger(GpsMainActivity.class.getSimpleName());
-
         loadPresetProperties();
 
         setContentView(R.layout.activity_gps_main);
@@ -161,13 +164,13 @@ public class GpsMainActivity extends ActionBarActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
+        //drawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        //drawerToggle.onConfigurationChanged(newConfig);
     }
 
 
@@ -175,7 +178,6 @@ public class GpsMainActivity extends ActionBarActivity
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             ToggleDrawer();
         }
-
         return super.onKeyUp(keyCode, event);
     }
 
@@ -267,17 +269,19 @@ public class GpsMainActivity extends ActionBarActivity
     }
 
 
-
+/*
     public Toolbar GetToolbar(){
         return (Toolbar)findViewById(R.id.toolbar);
-    }
+    }*/
 
     public void SetUpToolbar(){
-        try{
-            Toolbar toolbar = GetToolbar();
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        try{
+//            Toolbar toolbar = GetToolbar();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+/*
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -287,12 +291,85 @@ public class GpsMainActivity extends ActionBarActivity
             //http://stackoverflow.com/questions/26657348/appcompat-v7-v21-0-0-causing-crash-on-samsung-devices-with-android-v4-2-2
             tracer.error("Thanks for this, Samsung", ex);
         }
+*/
 
     }
 
     public void SetUpNavigationDrawer() {
+        IProfile profile = new ProfileDrawerItem()
+                .withName("Du Quang Vu")
+                .withEmail("hoaivubk@gmail.com")
+                .withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460");
 
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        AccountHeader header = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(profile).build();
+
+        DrawerBuilder drawerBuilder = new DrawerBuilder()
+                .withActivity(this)
+                .withAccountHeader(header)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        new PrimaryDrawerItem()
+                                .withName(R.string.pref_general_title)
+                                .withDescription(R.string.pref_general_summary)
+                                .withIcon(FontAwesome.Icon.faw_cog)
+                                .withIdentifier(1000),
+                        new PrimaryDrawerItem()
+                                .withName(R.string.pref_performance_title)
+                                .withDescription(R.string.pref_performance_summary)
+                                .withIcon(FontAwesome.Icon.faw_bar_chart)
+                                .withIdentifier(2),
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem()
+                                .withName(R.string.opengts_setup_title)
+                                .withIcon(FontAwesome.Icon.faw_cab)
+                                .withIdentifier(8),
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem()
+                                .withName(R.string.menu_faq)
+                                .withIcon(FontAwesome.Icon.faw_support)
+                                .withIdentifier(11),
+                        new PrimaryDrawerItem()
+                                .withName(R.string.menu_exit)
+                                .withIcon(FontAwesome.Icon.faw_sign_out)
+                                .withIdentifier(12)
+
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(AdapterView<?> adapterView, View view, int i, long l, IDrawerItem iDrawerItem) {
+
+                        if (iDrawerItem != null) {
+                            int iden = iDrawerItem.getIdentifier();
+                            switch (iden) {
+                                case 1000:
+                                    LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.GENERAL);
+                                    break;
+                                case 2:
+                                    LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.PERFORMANCE);
+                                    break;
+                                case 8:
+                                    LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OPENGTS);
+                                    break;
+                                case 11:
+                                    //Intent faqtivity = new Intent(getApplicationContext(), Faqtivity.class);
+                                    //startActivity(faqtivity);
+                                    break;
+                                case 12:
+                                    EventBus.getDefault().post(new CommandEvents.RequestStartStop(false));
+                                    finish();
+                                    break;
+                            }
+                        }
+
+                        return false;
+                    }
+                });
+        drawerBuilder.build();
+
+        /*final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         final DrawerView drawer = (DrawerView) findViewById(R.id.drawer);
 
         drawerToggle = new ActionBarDrawerToggle(
@@ -387,7 +464,7 @@ public class GpsMainActivity extends ActionBarActivity
                         break;
                 }
             }
-        });
+        });*/
 
         ImageButton helpButton = (ImageButton) findViewById(R.id.imgHelp);
         helpButton.setOnClickListener(new View.OnClickListener() {
@@ -397,7 +474,6 @@ public class GpsMainActivity extends ActionBarActivity
                 //startActivity(faqtivity);
             }
         });
-
     }
 
     public void ToggleDrawer(){

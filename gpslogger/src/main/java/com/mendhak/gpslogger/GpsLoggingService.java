@@ -922,8 +922,7 @@ public class GpsLoggingService extends Service  {
                 tracer.info("Writing annotation: " + Session.getDescription());
                 FileLoggerFactory.Annotate(getApplicationContext(), Session.getDescription(), loc);
             }
-        }
-        catch(Exception e){
+        } catch(Exception e){
              tracer.error(getString(R.string.could_not_write_to_file), e);
         }
 

@@ -30,17 +30,8 @@ import java.util.List;
 
 public class FileLoggerFactory {
     public static List<IFileLogger> GetFileLoggers(Context context) {
-
         List<IFileLogger> loggers = new ArrayList<IFileLogger>();
-
-        if(Utilities.IsNullOrEmpty(AppSettings.getGpsLoggerFolder())){
-            return loggers;
-        }
-
-        if (AppSettings.shouldLogToOpenGTS()) {
-            loggers.add(new OpenGTSLogger(context));
-        }
-
+        loggers.add(new OpenGTSLogger(context));
         return loggers;
     }
 
