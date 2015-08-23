@@ -79,17 +79,6 @@ public class Utilities {
 
         AppSettings.setUseImperial(prefs.getBoolean("useImperial", false));
 
-        AppSettings.setLogToKml(prefs.getBoolean("log_kml", false));
-
-        AppSettings.setLogToGpx(prefs.getBoolean("log_gpx", true));
-
-        AppSettings.setLogToPlainText(prefs.getBoolean("log_plain_text", false));
-
-        AppSettings.setLogToNmea(prefs.getBoolean("log_nmea", false));
-
-        AppSettings.setLogToCustomUrl(prefs.getBoolean("log_customurl_enabled", false));
-        AppSettings.setCustomLoggingUrl(prefs.getString("log_customurl_url", ""));
-
         AppSettings.setLogToOpenGts(prefs.getBoolean("log_opengts", false));
 
         Set<String> listeners = new HashSet<String>(GetListeners());
@@ -149,14 +138,9 @@ public class Utilities {
 
         if (AppSettings.getNewFileCreation().equals("onceaday")) {
             AppSettings.setNewFileOnceADay(true);
-            AppSettings.setCustomFile(false);
         } else if (AppSettings.getNewFileCreation().equals("custom") || AppSettings.getNewFileCreation().equals("static")) {
-            AppSettings.setCustomFile(true);
-            AppSettings.setCustomFileName(prefs.getString("new_file_custom_name", "gpslogger"));
-            AppSettings.setAskCustomFileNameEachTime(prefs.getBoolean("new_file_custom_each_time", true));
         } else /* new log with each start */ {
             AppSettings.setNewFileOnceADay(false);
-            AppSettings.setCustomFile(false);
         }
 
         AppSettings.setAutoSendEnabled(prefs.getBoolean("autosend_enabled", false));
@@ -169,8 +153,6 @@ public class Utilities {
         } catch (Exception e)  { AppSettings.setAutoSendDelay(60f);  }
 
 
-        AppSettings.setAutoSendWhenIPressStop(prefs.getBoolean("autosend_frequency_whenstoppressed", false));
-
         AppSettings.setSmtpServer(prefs.getString("smtp_server", ""));
         AppSettings.setSmtpPort(prefs.getString("smtp_port", "25"));
         AppSettings.setSmtpSsl(prefs.getBoolean("smtp_ssl", true));
@@ -178,7 +160,6 @@ public class Utilities {
         AppSettings.setSmtpPassword(prefs.getString("smtp_password", ""));
         AppSettings.setAutoEmailTargets(prefs.getString("autoemail_target", ""));
         AppSettings.setDebugToFile(prefs.getBoolean("debugtofile", false));
-        AppSettings.setShouldSendZipFile(prefs.getBoolean("autosend_sendzip", true));
         AppSettings.setSmtpFrom(prefs.getString("smtp_from", ""));
         AppSettings.setOpenGtsAutoSendEnabled(prefs.getBoolean("autoopengts_enabled", false));
         AppSettings.setOpenGTSServer(prefs.getString("opengts_server", ""));
@@ -188,29 +169,6 @@ public class Utilities {
         AppSettings.setOpenGTSDeviceId(prefs.getString("opengts_device_id", ""));
         AppSettings.setOpenGTSAccountName(prefs.getString("opengts_accountname",""));
 
-        AppSettings.setGDocsAutoSendEnabled(prefs.getBoolean("gdocs_enabled", false));
-        AppSettings.setDropboxAutoSendEnabled(prefs.getBoolean("dropbox_enabled", false));
-        AppSettings.setOsmAutoSendEnabled(prefs.getBoolean("osm_enabled", false));
-
-        AppSettings.setFtpAutoSendEnabled(prefs.getBoolean("autoftp_enabled", false));
-        AppSettings.setFtpServerName(prefs.getString("autoftp_server", ""));
-        AppSettings.setFtpUsername(prefs.getString("autoftp_username", ""));
-        AppSettings.setFtpPassword(prefs.getString("autoftp_password", ""));
-        AppSettings.setFtpDirectory(prefs.getString("autoftp_directory", "GPSLogger"));
-        AppSettings.setFtpPort(Integer.valueOf(prefs.getString("autoftp_port", "21")));
-        AppSettings.setFtpUseFtps(prefs.getBoolean("autoftp_useftps", false));
-        AppSettings.setFtpProtocol(prefs.getString("autoftp_ssltls", ""));
-        AppSettings.setFtpImplicit(prefs.getBoolean("autoftp_implicit", false));
-
-        AppSettings.setOwnCloudAutoSendEnabled(prefs.getBoolean("owncloud_enabled", false));
-        AppSettings.setOwnCloudServerName(prefs.getString("owncloud_server", ""));
-        AppSettings.setOwnCloudUsername(prefs.getString("owncloud_username", ""));
-        AppSettings.setOwnCloudPassword(prefs.getString("owncloud_password", ""));
-        AppSettings.setOwnCloudDirectory(prefs.getString("owncloud_directory", "/gpslogger"));
-
-        AppSettings.setGpsLoggerFolder(prefs.getString("gpslogger_folder", Utilities.GetDefaultStorageFolder(context).getAbsolutePath()));
-        AppSettings.setFileNamePrefixSerial(prefs.getBoolean("new_file_prefix_serial", false));
-
         String absoluteTimeoutString = prefs.getString("absolute_timeout",
                 "120");
 
@@ -219,8 +177,6 @@ public class Utilities {
         } else {
             AppSettings.setAbsoluteTimeout(120);
         }
-
-        AppSettings.setGoogleDriveFolderName(prefs.getString("gdocs_foldername", "GPSLogger for Android"));
 
         AppSettings.setShouldNotLogIfUserIsStill(prefs.getBoolean("activityrecognition_dontlogifstill", false));
 

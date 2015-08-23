@@ -472,4 +472,6 @@
     <string name="autosend_wifionly_title">Send on Wi-Fi only</string>
     <string name="logview_showlocationsonly">Locations only</string>
     <string name="logview_autoscroll">Auto Scroll</string>
+    <string name="pref_administration">Administration</string>
+    <string name="pref_login_to_manage">Login to do management</string>
 </resources>

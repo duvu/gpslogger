@@ -166,7 +166,6 @@ public class GpsMainActivity extends ActionBarActivity
 
 
     private void loadPresetProperties() {
-
         //Either look for /<appfolder>/gpslogger.properties or /sdcard/gpslogger.properties
         File file =  new File(Utilities.GetDefaultStorageFolder(getApplicationContext()) + "/gpslogger.properties");
         if(!file.exists()){
@@ -232,11 +231,6 @@ public class GpsMainActivity extends ActionBarActivity
     }
 
 
-/*
-    public Toolbar GetToolbar(){
-        return (Toolbar)findViewById(R.id.toolbar);
-    }*/
-
     public void SetUpToolbar(){
         try{
             toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -270,6 +264,11 @@ public class GpsMainActivity extends ActionBarActivity
                 .withAccountHeader(header)
                 .withToolbar(toolbar)
                 .addDrawerItems(
+                        new PrimaryDrawerItem()
+                                .withName(R.string.pref_administration)
+                                .withDescription(R.string.pref_login_to_manage)
+                                .withIcon(FontAwesome.Icon.faw_archive)
+                                .withIdentifier(1001),
                         new PrimaryDrawerItem()
                                 .withName(R.string.pref_general_title)
                                 .withDescription(R.string.pref_general_summary)
@@ -327,103 +326,6 @@ public class GpsMainActivity extends ActionBarActivity
                     }
                 });
         drawerBuilder.build();
-
-        /*final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        final DrawerView drawer = (DrawerView) findViewById(R.id.drawer);
-
-        drawerToggle = new ActionBarDrawerToggle(
-                this,
-                drawerLayout,
-                GetToolbar(),
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close
-        ){
-
-            public void onDrawerClosed(View view) {
-                invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                invalidateOptionsMenu();
-            }
-        };
-
-
-        drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primaryColorDark));
-        drawerLayout.setDrawerListener(drawerToggle);
-        drawerLayout.closeDrawer(drawer);
-
-        DrawerProfile profile = new DrawerProfile();
-        profile.setRoundedAvatar((BitmapDrawable) getResources().getDrawable(R.drawable.bitcoin));
-        profile.setName("Du Quang Vu");
-        profile.setDescription("General manager");
-        drawer.addProfile(profile);
-
-        drawer.addItem(new DrawerItem()
-                        .setId(1000)
-                        .setImage(getResources().getDrawable(R.drawable.settings))
-                        .setTextPrimary(getString(R.string.pref_general_title))
-                        .setTextSecondary(getString(R.string.pref_general_summary))
-        );
-
-        drawer.addItem(new DrawerItem()
-                        .setId(2)
-                        .setImage(getResources().getDrawable(R.drawable.performance))
-                        .setTextPrimary(getString(R.string.pref_performance_title))
-                        .setTextSecondary(getString(R.string.pref_performance_summary))
-        );
-
-
-        drawer.addDivider();
-
-        drawer.addItem(new DrawerItem()
-                        .setId(8)
-                        .setImage(getResources().getDrawable(R.drawable.opengts))
-                        .setTextPrimary(getString(R.string.opengts_setup_title))
-        );
-
-        drawer.addDivider();
-
-        drawer.addItem(new DrawerItem()
-                        .setId(11)
-                        .setImage(getResources().getDrawable(R.drawable.helpfaq))
-                        .setTextPrimary(getString(R.string.menu_faq))
-        );
-
-        drawer.addItem(new DrawerItem()
-                        .setId(12)
-                        .setImage(getResources().getDrawable(R.drawable.exit))
-                        .setTextPrimary(getString(R.string.menu_exit)));
-
-        //drawer.selectItem(3);
-
-        drawer.setOnItemClickListener(new DrawerItem.OnItemClickListener() {
-            @Override
-            public void onClick(DrawerItem drawerItem, long id, int position) {
-                //drawer.selectItem(3);
-                drawerLayout.closeDrawer(drawer);
-
-                switch((int)id){
-                    case 1000:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.GENERAL);
-                        break;
-                    case 2:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.PERFORMANCE);
-                        break;
-                    case 8:
-                        LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OPENGTS);
-                        break;
-                    case 11:
-                        //Intent faqtivity = new Intent(getApplicationContext(), Faqtivity.class);
-                        //startActivity(faqtivity);
-                        break;
-                    case 12:
-                        EventBus.getDefault().post(new CommandEvents.RequestStartStop(false));
-                        finish();
-                        break;
-                }
-            }
-        });*/
 
         ImageButton helpButton = (ImageButton) findViewById(R.id.imgHelp);
         helpButton.setOnClickListener(new View.OnClickListener() {
@@ -559,18 +461,11 @@ public class GpsMainActivity extends ActionBarActivity
         }
 
         if (mnuAnnotate != null) {
-
-            if (!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml() && !AppSettings.shouldLogToCustomUrl()) {
-                mnuAnnotate.setIcon(R.drawable.annotate2_disabled);
-                mnuAnnotate.setEnabled(false);
+            if (Session.isAnnotationMarked()) {
+                mnuAnnotate.setIcon(R.drawable.annotate2_active);
             } else {
-                if (Session.isAnnotationMarked()) {
-                    mnuAnnotate.setIcon(R.drawable.annotate2_active);
-                } else {
-                    mnuAnnotate.setIcon(R.drawable.annotate2);
-                }
+                mnuAnnotate.setIcon(R.drawable.annotate2);
             }
-
         }
     }
 
@@ -613,12 +508,6 @@ public class GpsMainActivity extends ActionBarActivity
      * description is given, the logging service starts in single point mode.
      */
     private void Annotate() {
-
-        if (!AppSettings.shouldLogToGpx() && !AppSettings.shouldLogToKml() && !AppSettings.shouldLogToCustomUrl()) {
-            Toast.makeText(getApplicationContext(), getString(R.string.annotation_requires_logging), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         MaterialDialog alertDialog = new MaterialDialog.Builder(GpsMainActivity.this)
                 .title(R.string.add_description)
                 .customView(R.layout.alertview, true)
@@ -644,11 +533,11 @@ public class GpsMainActivity extends ActionBarActivity
             LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OPENGTS);
         } else {
             IFileSender fs = FileSenderFactory.GetOpenGTSSender(getApplicationContext());
-            ShowFileListDialog(fs);
+            //ShowFileListDialog(fs);
         }
     }
 
-    private void ShowFileListDialog(final IFileSender sender) {
+    /*private void ShowFileListDialog(final IFileSender sender) {
 
         if (!Utilities.isNetworkAvailable(this)) {
             Utilities.MsgBox(getString(R.string.sorry),getString(R.string.no_network_message), this);
@@ -709,7 +598,7 @@ public class GpsMainActivity extends ActionBarActivity
         } else {
             Utilities.MsgBox(getString(R.string.sorry), getString(R.string.no_files_found), this);
         }
-    }
+    }*/
 
     /**
      * Allows user to send a GPX/KML file along with location, or location only
@@ -718,86 +607,86 @@ public class GpsMainActivity extends ActionBarActivity
      */
     private void Share() {
 
-        try {
-
-            final String locationOnly = getString(R.string.sharing_location_only);
-            final File gpxFolder = new File(AppSettings.getGpsLoggerFolder());
-            if (gpxFolder.exists()) {
-
-                File[] enumeratedFiles = Utilities.GetFilesInFolder(gpxFolder);
-
-                Arrays.sort(enumeratedFiles, new Comparator<File>() {
-                    public int compare(File f1, File f2) {
-                        return -1 * Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
-                    }
-                });
-
-                List<String> fileList = new ArrayList<String>(enumeratedFiles.length);
-
-                for (File f : enumeratedFiles) {
-                    fileList.add(f.getName());
-                }
-
-                fileList.add(0, locationOnly);
-                final String[] files = fileList.toArray(new String[fileList.size()]);
-
-                new MaterialDialog.Builder(this)
-                        .title(R.string.osm_pick_file)
-                        .items(files)
-                        .positiveText(R.string.ok)
-                        .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
-                                List<Integer> selectedItems = Arrays.asList(integers);
-
-                                final Intent intent = new Intent(Intent.ACTION_SEND);
-                                intent.setType("*/*");
-
-                                if (selectedItems.size() <= 0) {
-                                    return false;
-                                }
-
-                                if (selectedItems.contains(0)) {
-
-                                    intent.setType("text/plain");
-
-                                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.sharing_mylocation));
-                                    if (Session.hasValidLocation()) {
-                                        String bodyText = getString(R.string.sharing_googlemaps_link,
-                                                String.valueOf(Session.getCurrentLatitude()),
-                                                String.valueOf(Session.getCurrentLongitude()));
-                                        intent.putExtra(Intent.EXTRA_TEXT, bodyText);
-                                        intent.putExtra("sms_body", bodyText);
-                                        startActivity(Intent.createChooser(intent, getString(R.string.sharing_via)));
-                                    }
-                                } else {
-
-                                    intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                                    intent.putExtra(Intent.EXTRA_SUBJECT, "Here are some files.");
-                                    intent.setType("*/*");
-
-                                    ArrayList<Uri> chosenFiles = new ArrayList<Uri>();
-
-                                    for (Object path : selectedItems) {
-                                        File file = new File(gpxFolder, files[Integer.valueOf(path.toString())]);
-                                        Uri uri = Uri.fromFile(file);
-                                        chosenFiles.add(uri);
-                                    }
-
-                                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, chosenFiles);
-                                    startActivity(Intent.createChooser(intent, getString(R.string.sharing_via)));
-                                }
-                                return true;
-                            }
-                        }).show();
-
-
-            } else {
-                Utilities.MsgBox(getString(R.string.sorry), getString(R.string.no_files_found), this);
-            }
-        } catch (Exception ex) {
-            Log.e (TAG, "Sharing problem", ex);
-        }
+//        try {
+//
+//            final String locationOnly = getString(R.string.sharing_location_only);
+//            final File gpxFolder = new File(AppSettings.getGpsLoggerFolder());
+//            if (gpxFolder.exists()) {
+//
+//                File[] enumeratedFiles = Utilities.GetFilesInFolder(gpxFolder);
+//
+//                Arrays.sort(enumeratedFiles, new Comparator<File>() {
+//                    public int compare(File f1, File f2) {
+//                        return -1 * Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+//                    }
+//                });
+//
+//                List<String> fileList = new ArrayList<String>(enumeratedFiles.length);
+//
+//                for (File f : enumeratedFiles) {
+//                    fileList.add(f.getName());
+//                }
+//
+//                fileList.add(0, locationOnly);
+//                final String[] files = fileList.toArray(new String[fileList.size()]);
+//
+//                new MaterialDialog.Builder(this)
+//                        .title(R.string.osm_pick_file)
+//                        .items(files)
+//                        .positiveText(R.string.ok)
+//                        .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+//                            @Override
+//                            public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+//                                List<Integer> selectedItems = Arrays.asList(integers);
+//
+//                                final Intent intent = new Intent(Intent.ACTION_SEND);
+//                                intent.setType("*/*");
+//
+//                                if (selectedItems.size() <= 0) {
+//                                    return false;
+//                                }
+//
+//                                if (selectedItems.contains(0)) {
+//
+//                                    intent.setType("text/plain");
+//
+//                                    intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.sharing_mylocation));
+//                                    if (Session.hasValidLocation()) {
+//                                        String bodyText = getString(R.string.sharing_googlemaps_link,
+//                                                String.valueOf(Session.getCurrentLatitude()),
+//                                                String.valueOf(Session.getCurrentLongitude()));
+//                                        intent.putExtra(Intent.EXTRA_TEXT, bodyText);
+//                                        intent.putExtra("sms_body", bodyText);
+//                                        startActivity(Intent.createChooser(intent, getString(R.string.sharing_via)));
+//                                    }
+//                                } else {
+//
+//                                    intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+//                                    intent.putExtra(Intent.EXTRA_SUBJECT, "Here are some files.");
+//                                    intent.setType("*/*");
+//
+//                                    ArrayList<Uri> chosenFiles = new ArrayList<Uri>();
+//
+//                                    for (Object path : selectedItems) {
+//                                        File file = new File(gpxFolder, files[Integer.valueOf(path.toString())]);
+//                                        Uri uri = Uri.fromFile(file);
+//                                        chosenFiles.add(uri);
+//                                    }
+//
+//                                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, chosenFiles);
+//                                    startActivity(Intent.createChooser(intent, getString(R.string.sharing_via)));
+//                                }
+//                                return true;
+//                            }
+//                        }).show();
+//
+//
+//            } else {
+//                Utilities.MsgBox(getString(R.string.sorry), getString(R.string.no_files_found), this);
+//            }
+//        } catch (Exception ex) {
+//            Log.e (TAG, "Sharing problem", ex);
+//        }
     }
 
 

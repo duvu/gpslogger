@@ -272,7 +272,7 @@ public class GpsLoggingService extends Service  {
                     boolean logOnceIntent = bundle.getBoolean(IntentConstants.LOG_ONCE);
                     Log.d(TAG, "Intent received - Log Once: " + String.valueOf(logOnceIntent));
                     needToStartGpsManager = false;
-                    LogOnce();
+                    //LogOnce();
                 }
 
                 try {
@@ -300,7 +300,7 @@ public class GpsLoggingService extends Service  {
     /**
      * Sets up the auto email timers based on user preferences.
      */
-    public void SetupAutoSendTimers() {
+/*    public void SetupAutoSendTimers() {
         Log.d(TAG, "Setting up autosend timers. Auto Send Enabled - " + String.valueOf(AppSettings.isAutoSendEnabled())
                 + ", Auto Send Delay - " + String.valueOf(Session.getAutoSendDelay()));
 
@@ -321,10 +321,10 @@ public class GpsLoggingService extends Service  {
                 CancelAlarm();
             }
         }
-    }
+    }*/
 
 
-    public void LogOnce() {
+    /*public void LogOnce() {
         Session.setSinglePointMode(true);
 
         if (Session.isStarted()) {
@@ -332,7 +332,7 @@ public class GpsLoggingService extends Service  {
         } else {
             StartLogging();
         }
-    }
+    }*/
 
     private void CancelAlarm() {
         if (alarmIntent != null) {
@@ -346,16 +346,16 @@ public class GpsLoggingService extends Service  {
      * Method to be called if user has chosen to auto email log files when he
      * stops logging
      */
-    private void AutoSendLogFileOnStop() {
+    /*private void AutoSendLogFileOnStop() {
         if (AppSettings.isAutoSendEnabled() && AppSettings.shouldAutoSendWhenIPressStop()) {
             AutoSendLogFile(null);
         }
-    }
+    }*/
 
     /**
      * Calls the Auto Senders which process the files and send it.
      */
-    private void AutoSendLogFile(@Nullable String formattedFileName) {
+    /*private void AutoSendLogFile(@Nullable String formattedFileName) {
 
         Log.d(TAG, "Filename: " + formattedFileName);
 
@@ -364,7 +364,7 @@ public class GpsLoggingService extends Service  {
             FileSenderFactory.SendFiles(getApplicationContext(), fileToSend);
             SetupAutoSendTimers();
         }
-    }
+    }*/
 
     /**
      * Gets preferences chosen by the user and populates the AppSettings object.
@@ -373,10 +373,10 @@ public class GpsLoggingService extends Service  {
     private void GetPreferences() {
         Utilities.PopulateAppSettings(getApplicationContext());
 
-        if (Session.getAutoSendDelay() != AppSettings.getAutoSendDelay()) {
+       /* if (Session.getAutoSendDelay() != AppSettings.getAutoSendDelay()) {
             Session.setAutoSendDelay(AppSettings.getAutoSendDelay());
             SetupAutoSendTimers();
-        }
+        }*/
 
     }
 
@@ -403,8 +403,8 @@ public class GpsLoggingService extends Service  {
 
         GetPreferences();
         ShowNotification();
-        SetupAutoSendTimers();
-        ResetCurrentFileName(true);
+        //SetupAutoSendTimers();
+        //ResetCurrentFileName(true);
         NotifyClientStarted();
         StartPassiveManager();
         StartGpsManager();
@@ -433,10 +433,10 @@ public class GpsLoggingService extends Service  {
         Session.setLatestTimeStamp(0);
         stopAbsoluteTimer();
         // Email log file before setting location info to null
-        AutoSendLogFileOnStop();
+//        AutoSendLogFileOnStop();
         CancelAlarm();
         Session.setCurrentLocationInfo(null);
-        Session.setSinglePointMode(false);
+//        Session.setSinglePointMode(false);
         stopForeground(true);
 
         RemoveNotification();
@@ -591,7 +591,7 @@ public class GpsLoggingService extends Service  {
     }
 
     private boolean userHasBeenStillForTooLong() {
-        return !Session.hasDescription() && !Session.isSinglePointMode() &&
+        return !Session.hasDescription() /*&& !Session.isSinglePointMode() */&&
                 (Session.getUserStillSinceTimeStamp() > 0 && (System.currentTimeMillis() - Session.getUserStillSinceTimeStamp()) > (AppSettings.getMinimumSeconds() * 1000));
     }
 
@@ -654,14 +654,14 @@ public class GpsLoggingService extends Service  {
     /**
      * Sets the current file name based on user preference.
      */
-    private void ResetCurrentFileName(boolean newLogEachStart) {
+    /*private void ResetCurrentFileName(boolean newLogEachStart) {
 
         String oldFileName = Session.getCurrentFormattedFileName();
 
-        /* Pick up saved settings, if any. (Saved static file) */
+        *//* Pick up saved settings, if any. (Saved static file) *//*
         String newFileName = Session.getCurrentFileName();
 
-        /* Update the file name, if required. (New day, Re-start service) */
+        *//* Update the file name, if required. (New day, Re-start service) *//*
         if (AppSettings.isCustomFile()) {
             newFileName = AppSettings.getCustomFileName();
             Session.setCurrentFileName(AppSettings.getCustomFileName());
@@ -689,7 +689,7 @@ public class GpsLoggingService extends Service  {
         Log.i(TAG, "Filename: " + Session.getCurrentFileName());
         EventBus.getDefault().post(new ServiceEvents.FileNamed(Session.getCurrentFileName()));
 
-    }
+    }*/
 
 
 
@@ -731,11 +731,11 @@ public class GpsLoggingService extends Service  {
 
         long currentTimeStamp = System.currentTimeMillis();
 
-        Log.d(TAG, "Has description? " + Session.hasDescription() + ", Single point? " + Session.isSinglePointMode() + ", Last timestamp: " + Session.getLatestTimeStamp());
+        Log.d(TAG, "Has description? " + Session.hasDescription() + ", Last timestamp: " + Session.getLatestTimeStamp());
 
         // Don't log a point until the user-defined time has elapsed
         // However, if user has set an annotation, just log the point, disregard any filters
-        if (!Session.hasDescription() && !Session.isSinglePointMode() && (currentTimeStamp - Session.getLatestTimeStamp()) < (AppSettings.getMinimumSeconds() * 1000)) {
+        if (!Session.hasDescription() && (currentTimeStamp - Session.getLatestTimeStamp()) < (AppSettings.getMinimumSeconds() * 1000)) {
             return;
         }
 
@@ -787,7 +787,7 @@ public class GpsLoggingService extends Service  {
 
         //Don't do anything until the user-defined distance has been traversed
         // However, if user has set an annotation, just log the point, disregard any filters
-        if (!Session.hasDescription() && !Session.isSinglePointMode() && AppSettings.getMinimumDistanceInMeters() > 0 && Session.hasValidLocation()) {
+        if (!Session.hasDescription() && AppSettings.getMinimumDistanceInMeters() > 0 && Session.hasValidLocation()) {
 
             double distanceTraveled = Utilities.CalculateDistance(loc.getLatitude(), loc.getLongitude(),
                     Session.getCurrentLatitude(), Session.getCurrentLongitude());
@@ -802,7 +802,7 @@ public class GpsLoggingService extends Service  {
 
         Log.i(TAG, String.valueOf(loc.getLatitude()) + "," + String.valueOf(loc.getLongitude()));
         AdjustAltitude(loc);
-        ResetCurrentFileName(false);
+//        ResetCurrentFileName(false);
         Session.setLatestTimeStamp(System.currentTimeMillis());
         Session.setCurrentLocationInfo(loc);
         SetDistanceTraveled(loc);
@@ -818,10 +818,10 @@ public class GpsLoggingService extends Service  {
 
         EventBus.getDefault().post(new ServiceEvents.LocationUpdate(loc));
 
-        if (Session.isSinglePointMode()) {
+        /*if (Session.isSinglePointMode()) {
             Log.d(TAG, "Single point mode - stopping now");
             StopLogging();
-        }
+        }*/
     }
 
     private void AdjustAltitude(Location loc) {
@@ -969,7 +969,7 @@ public class GpsLoggingService extends Service  {
 
     @EventBusHook
     public void onEvent(CommandEvents.AutoSend autoSend){
-        AutoSendLogFile(autoSend.formattedFileName);
+        //AutoSendLogFile(autoSend.formattedFileName);
 
         EventBus.getDefault().removeStickyEvent(CommandEvents.AutoSend.class);
     }
@@ -989,7 +989,7 @@ public class GpsLoggingService extends Service  {
                 StartGpsManager();
             }
             else {
-                LogOnce();
+                //LogOnce();
             }
         }
 
@@ -998,7 +998,7 @@ public class GpsLoggingService extends Service  {
 
     @EventBusHook
     public void onEvent(CommandEvents.LogOnce logOnce){
-        LogOnce();
+       // LogOnce();
     }
 
     @EventBusHook

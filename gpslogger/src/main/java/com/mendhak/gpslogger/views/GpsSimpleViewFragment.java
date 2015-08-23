@@ -76,7 +76,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
         rootView = inflater.inflate(R.layout.fragment_simple_view, container, false);
 
         setImageTooltips();
-        showPreferencesSummary();
+        ///();
 
         actionButton = (ActionProcessButton)rootView.findViewById(R.id.btnActionProcess);
         actionButton.setMode(ActionProcessButton.Mode.ENDLESS);
@@ -116,9 +116,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
         actionButton.setAlpha(0.8f);
     }
 
-    private void showPreferencesSummary() {
-        showCurrentFileName(Session.getCurrentFileName());
-
+    /*private void showPreferencesSummary() {
 
         ImageView imgGpx = (ImageView) rootView.findViewById(R.id.simpleview_imgGpx);
         ImageView imgKml = (ImageView) rootView.findViewById(R.id.simpleview_imgKml);
@@ -164,9 +162,9 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
             showCurrentFileName(null);
         }
 
-    }
+    }*/
 
-    private void showCurrentFileName(String newFileName) {
+    /*private void showCurrentFileName(String newFileName) {
         TextView txtFilename = (TextView) rootView.findViewById(R.id.simpleview_txtfilepath);
         if (newFileName == null || newFileName.length() <= 0) {
             txtFilename.setText("");
@@ -182,7 +180,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
                 AppSettings.getGpsLoggerFolder(),
                 getActivity().getApplicationContext());
 
-    }
+    }*/
 
     private enum IconColorIndicator {
         Good,
@@ -258,7 +256,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
 
     @Override
     public void onResume() {
-        showPreferencesSummary();
+        //showPreferencesSummary();
 
         if(Session.isStarted()){
             setActionButtonStop();
@@ -295,7 +293,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
     public void onEventMainThread(ServiceEvents.LoggingStatus loggingStatus){
 
         if(loggingStatus.loggingStarted){
-            showPreferencesSummary();
+            //showPreferencesSummary();
             clearLocationDisplay();
             setActionButtonStop();
         }
@@ -307,11 +305,11 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
 
     @EventBusHook
     public void onEventMainThread(ServiceEvents.FileNamed fileNamed){
-        showCurrentFileName(fileNamed.newFileName);
+        //showCurrentFileName(fileNamed.newFileName);
     }
 
     public void DisplayLocationInfo(Location locationInfo){
-        showPreferencesSummary();
+        //showPreferencesSummary();
 
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(3);
@@ -517,7 +515,7 @@ public class GpsSimpleViewFragment extends GenericViewFragment implements View.O
                 break;
 
             case R.id.simpleview_imgLink:
-                toast = getToast(AppSettings.getCustomLoggingUrl());
+                //toast = getToast(AppSettings.getCustomLoggingUrl());
                 break;
 
         }

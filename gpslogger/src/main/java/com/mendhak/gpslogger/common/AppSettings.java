@@ -63,12 +63,12 @@ public class AppSettings extends Application {
     private static boolean hideNotificationButtons = false;
     private static boolean newFileOnceADay;
 
-    private static boolean logToKml;
-    private static boolean logToGpx;
-    private static boolean logToPlainText;
-    private static boolean logToNmea;
-    private static boolean logToCustomUrl;
-    private static String customLoggingUrl;
+//    private static boolean logToKml;
+//    private static boolean logToGpx;
+//    private static boolean logToPlainText;
+//    private static boolean logToNmea;
+//    private static boolean logToCustomUrl;
+//    private static String customLoggingUrl;
     private static int minimumSeconds;
     private static boolean keepFix;
     private static int retryInterval;
@@ -86,7 +86,7 @@ public class AppSettings extends Application {
     private static boolean debugToFile;
     private static int minimumDistance;
     private static int minimumAccuracy;
-    private static boolean shouldSendZipFile;
+//    private static boolean shouldSendZipFile;
 
     private static boolean logToOpenGts;
 
@@ -98,46 +98,46 @@ public class AppSettings extends Application {
     private static String openGTSDeviceId;
     private static String openGTSAccountName;
 
-    private static boolean ftpAutoSendEnabled;
-    private static String ftpServerName;
-    private static int ftpPort;
-    private static String ftpUsername;
-    private static String ftpPassword;
-    private static String ftpDirectory;
-    private static boolean ftpUseFtps;
-    private static String ftpProtocol;
-    private static boolean ftpImplicit;
-
-    private static boolean ownCloudAutoSendEnabled;
-    private static String ownCloudServerName;
-    private static String ownCloudUsername;
-    private static String ownCloudPassword;
-    private static String ownCloudDirectory;
-
-    private static String customFileName;
-    private static boolean isCustomFile;
-    private static boolean askCustomFileNameEachTime;
-
-    private static String gpsLoggerFolder;
-
-    private static boolean fileNamePrefixSerial;
+//    private static boolean ftpAutoSendEnabled;
+//    private static String ftpServerName;
+//    private static int ftpPort;
+//    private static String ftpUsername;
+//    private static String ftpPassword;
+//    private static String ftpDirectory;
+//    private static boolean ftpUseFtps;
+//    private static String ftpProtocol;
+//    private static boolean ftpImplicit;
+//
+//    private static boolean ownCloudAutoSendEnabled;
+//    private static String ownCloudServerName;
+//    private static String ownCloudUsername;
+//    private static String ownCloudPassword;
+//    private static String ownCloudDirectory;
+//
+//    private static String customFileName;
+//    private static boolean isCustomFile;
+//    private static boolean askCustomFileNameEachTime;
+//
+//    private static String gpsLoggerFolder;
+//
+//    private static boolean fileNamePrefixSerial;
 
     private static int absoluteTimeout;
     private static Set<String> chosenListeners;
-    private static boolean autoSendWhenIPressStop;
-
-    private static boolean gDocsAutoSendEnabled;
-    private static boolean dropboxAutoSendEnabled;
-    private static boolean osmAutoSendEnabled;
-
-    private static String googleDriveFolderName;
+//    private static boolean autoSendWhenIPressStop;
+//
+//    private static boolean gDocsAutoSendEnabled;
+//    private static boolean dropboxAutoSendEnabled;
+//    private static boolean osmAutoSendEnabled;
+//
+//    private static String googleDriveFolderName;
 
     private static boolean dontLogIfUserIsStill;
 
     private static boolean adjustAltitudeFromGeoIdHeight;
     private static int subtractAltitudeOffset;
 
-
+/*
     public static boolean isOsmAutoSendEnabled() {
         return osmAutoSendEnabled;
     }
@@ -160,7 +160,7 @@ public class AppSettings extends Application {
 
     public static void setGDocsAutoSendEnabled(boolean gdocsEnabled) {
         AppSettings.gDocsAutoSendEnabled = gdocsEnabled;
-    }
+    }*/
 
 
     /**
@@ -193,30 +193,39 @@ public class AppSettings extends Application {
 
 
 
-    /**
+/*
+    */
+/**
      * @return the logToKml
-     */
+     *//*
+
     public static boolean shouldLogToKml() {
         return logToKml;
     }
 
-    /**
+    */
+/**
      * @param logToKml the logToKml to set
-     */
+     *//*
+
     static void setLogToKml(boolean logToKml) {
         AppSettings.logToKml = logToKml;
     }
 
-    /**
+    */
+/**
      * @return the logToGpx
-     */
+     *//*
+
     public static boolean shouldLogToGpx() {
         return logToGpx;
     }
 
-    /**
+    */
+/**
      * @param logToGpx the logToGpx to set
-     */
+     *//*
+
     static void setLogToGpx(boolean logToGpx) {
         AppSettings.logToGpx = logToGpx;
     }
@@ -228,6 +237,7 @@ public class AppSettings extends Application {
     static void setLogToPlainText(boolean logToPlainText) {
         AppSettings.logToPlainText = logToPlainText;
     }
+*/
 
 
     /**
@@ -406,13 +416,13 @@ public class AppSettings extends Application {
     }
 
 
-    public static boolean shouldSendZipFile() {
+    /*public static boolean shouldSendZipFile() {
         return shouldSendZipFile;
     }
 
     public static void setShouldSendZipFile(boolean shouldSendZipFile) {
         AppSettings.shouldSendZipFile = shouldSendZipFile;
-    }
+    }*/
 
     private static String getSmtpFrom() {
         return smtpFrom;
@@ -499,7 +509,7 @@ public class AppSettings extends Application {
         AppSettings.openGTSDeviceId = openGTSDeviceId;
     }
 
-
+/*
     public static String getFtpServerName() {
         return ftpServerName;
     }
@@ -661,7 +671,7 @@ public class AppSettings extends Application {
 
     public static void setFileNamePrefixSerial(boolean fileNamePrefixSerial) {
         AppSettings.fileNamePrefixSerial = fileNamePrefixSerial;
-    }
+    }*/
 
     public static int getAbsoluteTimeout() {
         return absoluteTimeout;
@@ -671,13 +681,13 @@ public class AppSettings extends Application {
         AppSettings.absoluteTimeout = absoluteTimeout;
     }
 
-    public static boolean shouldLogToNmea() {
+    /*public static boolean shouldLogToNmea() {
         return logToNmea;
     }
 
     public static void setLogToNmea(boolean logToNmea) {
         AppSettings.logToNmea = logToNmea;
-    }
+    }*/
 
     public static String getOpenGTSAccountName() {
         return openGTSAccountName;
@@ -695,13 +705,13 @@ public class AppSettings extends Application {
         return chosenListeners;
     }
 
-    public static void setAutoSendWhenIPressStop(boolean autoSendWhenIPressStop) {
+    /*public static void setAutoSendWhenIPressStop(boolean autoSendWhenIPressStop) {
         AppSettings.autoSendWhenIPressStop = autoSendWhenIPressStop;
     }
 
     public static boolean shouldAutoSendWhenIPressStop() {
         return autoSendWhenIPressStop;
-    }
+    }*/
 
 
 
@@ -715,13 +725,13 @@ public class AppSettings extends Application {
 
 
 
-    public static String getGoogleDriveFolderName() {
+    /*public static String getGoogleDriveFolderName() {
         return googleDriveFolderName;
     }
 
     public static void setGoogleDriveFolderName(String googleDriveFolderName) {
         AppSettings.googleDriveFolderName = googleDriveFolderName;
-    }
+    }*/
 
     public static boolean shouldNotLogIfUserIsStill() {
         return AppSettings.dontLogIfUserIsStill;
