@@ -3,7 +3,7 @@
                   android:key="gpslogger_preferences"
                   android:title="@string/pref_logging_title"
                   android:summary="@string/pref_logging_summary">
-        <com.mendhak.gpslogger.views.component.CustomSwitchPreference
+        <com.umaps.gpslogger.views.component.CustomSwitchPreference
             android:key="log_opengts"
             android:summary="@string/log_opengts_summary"
             android:title="@string/log_opengts_title"/>

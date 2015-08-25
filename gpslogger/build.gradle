@@ -28,8 +28,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
-        versionCode 66
-        versionName "66"
+        versionCode 1
+        versionName "1"
     }
 
     //Adding API keys to BuildConfig
@@ -110,8 +110,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-base:7.5.0'
     compile 'com.google.android.gms:play-services-location:7.5.0'
     compile 'com.google.android.gms:play-services-drive:7.5.0'
-    compile "com.android.support:appcompat-v7:22.2.0"
-    compile "com.android.support:cardview-v7:22.2.0"
+    compile "com.android.support:appcompat-v7:22.2.1"
+    compile "com.android.support:cardview-v7:22.2.1"
 
     compile('commons-net:commons-net:2.0')
 
@@ -148,15 +148,6 @@ dependencies {
     //JARs which aren't on maven
     compile 'com.mendhak.gpsloggersupport:activation:0.0.1'
     compile 'com.mendhak.gpsloggersupport:additionnal:0.0.1'
-    compile 'com.mendhak.gpsloggersupport:mail:0.0.1'
-    compile 'com.mendhak.gpsloggersupport:dropbox-android-sdk:1.6.3'
-    compile 'com.mendhak.gpsloggersupport:owncloud-android-library:0.0.1@aar'
-
-    //Required by owncloud library
-    compile ('commons-httpclient:commons-httpclient:3.1') {
-        exclude module: 'commons-logging'
-    }
-    compile 'org.apache.jackrabbit:jackrabbit-webdav:2.10.1'
 
 }
 
