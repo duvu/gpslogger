@@ -161,7 +161,7 @@ public class GpsLoggingService extends Service  {
     public void onDestroy() {
         Log.w(TAG, "GpsLoggingService is being destroyed by Android OS.");
         UnregisterEventBus();
-        RemoveNotification();
+        //RemoveNotification();
         super.onDestroy();
     }
 
@@ -330,7 +330,7 @@ public class GpsLoggingService extends Service  {
         Session.setStarted(true);
 
         GetPreferences();
-        ShowNotification();
+        //ShowNotification();
         NotifyClientStarted();
         StartPassiveManager();
         StartGpsManager();
@@ -362,7 +362,7 @@ public class GpsLoggingService extends Service  {
         Session.setCurrentLocationInfo(null);
         stopForeground(true);
 
-        RemoveNotification();
+        //RemoveNotification();
         StopAlarm();
         StopGpsManager();
         StopPassiveManager();
@@ -373,15 +373,15 @@ public class GpsLoggingService extends Service  {
     /**
      * Hides the notification icon in the status bar if it's visible.
      */
-    private void RemoveNotification() {
+    /*private void RemoveNotification() {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
-    }
+    }*/
 
     /**
      * Shows a notification icon in the status bar for GPS Logger
      */
-    private void ShowNotification() {
+    /*private void ShowNotification() {
 
         Intent stopLoggingIntent = new Intent(this, GpsLoggingService.class);
         stopLoggingIntent.setAction("NotificationButton_STOP");
@@ -436,7 +436,7 @@ public class GpsLoggingService extends Service  {
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, nfc.build());
-    }
+    }*/
 
     private void StartPassiveManager() {
         if(AppSettings.getChosenListeners().contains("passive")){
@@ -686,7 +686,7 @@ public class GpsLoggingService extends Service  {
         Session.setLatestTimeStamp(System.currentTimeMillis());
         Session.setCurrentLocationInfo(loc);
         SetDistanceTraveled(loc);
-        ShowNotification();
+        //ShowNotification();
 
         if(isPassiveLocation){
             Log.d(TAG, "Logging passive location to file");
