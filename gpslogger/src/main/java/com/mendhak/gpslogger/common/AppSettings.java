@@ -415,15 +415,6 @@ public class AppSettings extends Application {
         AppSettings.debugToFile = debugToFile;
     }
 
-
-    /*public static boolean shouldSendZipFile() {
-        return shouldSendZipFile;
-    }
-
-    public static void setShouldSendZipFile(boolean shouldSendZipFile) {
-        AppSettings.shouldSendZipFile = shouldSendZipFile;
-    }*/
-
     private static String getSmtpFrom() {
         return smtpFrom;
     }

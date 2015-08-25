@@ -113,8 +113,6 @@ dependencies {
     compile "com.android.support:appcompat-v7:22.2.0"
     compile "com.android.support:cardview-v7:22.2.0"
 
-    compile 'com.parse:parse-android:1.10.1'
-
     compile('commons-net:commons-net:2.0')
 
     compile('org.apache.httpcomponents:httpmime:4.0.3'){
@@ -127,18 +125,6 @@ dependencies {
         exclude module: 'commons-logging'
     }
 
-/*
-    compile('oauth.signpost:signpost-commonshttp4:1.2.1.1'){
-        exclude module: 'commons-logging'
-        exclude module: 'httpcore'
-        exclude module: 'httpclient'
-    }
-
-    compile('oauth.signpost:signpost-core:1.2.1.1'){
-        exclude module: 'commons-codec'
-    }
-*/
-
     compile('com.googlecode.json-simple:json-simple:1.1')
 
     //Material dialogs
@@ -147,9 +133,9 @@ dependencies {
     //The material drawer
     //compile 'com.heinrichreimersoftware.materialdrawer:library:2.1'
     //--drawer
-    compile('com.mikepenz:materialdrawer:3.1.2@aar') {
-        transitive = true
-    }
+    //compile('com.mikepenz:materialdrawer:3.1.2@aar') {
+    //    transitive = true
+    //}
     //Progress button
     compile 'com.github.dmytrodanylyk.android-process-button:library:1.0.0'
 

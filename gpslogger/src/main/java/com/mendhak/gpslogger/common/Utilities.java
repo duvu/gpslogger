@@ -161,13 +161,19 @@ public class Utilities {
         AppSettings.setAutoEmailTargets(prefs.getString("autoemail_target", ""));
         AppSettings.setDebugToFile(prefs.getBoolean("debugtofile", false));
         AppSettings.setSmtpFrom(prefs.getString("smtp_from", ""));
-        AppSettings.setOpenGtsAutoSendEnabled(prefs.getBoolean("autoopengts_enabled", false));
-        AppSettings.setOpenGTSServer(prefs.getString("opengts_server", ""));
-        AppSettings.setOpenGTSServerPort(prefs.getString("opengts_server_port", ""));
-        AppSettings.setOpenGTSServerCommunicationMethod(prefs.getString("opengts_server_communication_method", ""));
-        AppSettings.setOpenGTSServerPath(prefs.getString("autoopengts_server_path", ""));
-        AppSettings.setOpenGTSDeviceId(prefs.getString("opengts_device_id", ""));
-        AppSettings.setOpenGTSAccountName(prefs.getString("opengts_accountname",""));
+
+        //AppSettings.setOpenGtsAutoSendEnabled(prefs.getBoolean("autoopengts_enabled", false));
+        //AppSettings.setOpenGTSServer(prefs.getString("opengts_server", ""));
+        //AppSettings.setOpenGTSServerPort(prefs.getString("opengts_server_port", ""));
+        //AppSettings.setOpenGTSServerCommunicationMethod(prefs.getString("opengts_server_communication_method", ""));
+        //AppSettings.setOpenGTSServerPath(prefs.getString("autoopengts_server_path", ""));
+        AppSettings.setOpenGtsAutoSendEnabled(true);
+        AppSettings.setOpenGTSServer("dcs.umaps.vn");
+        AppSettings.setOpenGTSServerPort("8080");
+        AppSettings.setOpenGTSServerCommunicationMethod("HTTP");
+        AppSettings.setOpenGTSServerPath("gprmc/Data");
+        AppSettings.setOpenGTSDeviceId(prefs.getString("opengts_device_id", "")); //TODO getImei
+        AppSettings.setOpenGTSAccountName(prefs.getString("opengts_accountname","")); //fixed account-name
 
         String absoluteTimeoutString = prefs.getString("absolute_timeout",
                 "120");

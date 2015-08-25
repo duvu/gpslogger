@@ -474,4 +474,8 @@
     <string name="logview_autoscroll">Auto Scroll</string>
     <string name="pref_administration">Administration</string>
     <string name="pref_login_to_manage">Login to do management</string>
+    <string name="pref_view_simple">Simple View</string>
+    <string name="pref_view_simple_description">Show current position in simple style</string>
+    <string name="pref_view_map">Map View</string>
+    <string name="pref_view_map_description">Show current position in map</string>
 </resources>
