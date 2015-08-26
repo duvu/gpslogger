@@ -64,11 +64,11 @@ public class GpsLoggingService extends Service  {
     // Helpers and managers
     // ---------------------------------------------------
     protected LocationManager gpsLocationManager;
-    private LocationManager passiveLocationManager;
+    //private LocationManager passiveLocationManager;
     private LocationManager towerLocationManager;
     private GeneralLocationListener gpsLocationListener;
     private GeneralLocationListener towerLocationListener;
-    private GeneralLocationListener passiveLocationListener;
+    //private GeneralLocationListener passiveLocationListener;
     private Intent alarmIntent;
     private Handler handler = new Handler();
     private long firstRetryTimeStamp;
@@ -315,7 +315,6 @@ public class GpsLoggingService extends Service  {
      */
     protected void StartLogging() {
         Log.d(TAG, ".");
-        Session.setAddNewTrackSegment(true);
 
         if (Session.isStarted()) {
             Log.d(TAG, "Session already started, ignoring");
@@ -332,7 +331,7 @@ public class GpsLoggingService extends Service  {
         GetPreferences();
         //ShowNotification();
         NotifyClientStarted();
-        StartPassiveManager();
+        //StartPassiveManager();
         StartGpsManager();
         RequestActivityRecognitionUpdates();
 
@@ -351,7 +350,6 @@ public class GpsLoggingService extends Service  {
      */
     public void StopLogging() {
         Log.d(TAG, ".");
-        Session.setAddNewTrackSegment(true);
         Session.setTotalTravelled(0);
         Session.setPreviousLocationInfo(null);
         Session.setStarted(false);
@@ -365,88 +363,9 @@ public class GpsLoggingService extends Service  {
         //RemoveNotification();
         StopAlarm();
         StopGpsManager();
-        StopPassiveManager();
+        //StopPassiveManager();
         StopActivityRecognitionUpdates();
         NotifyClientStopped();
-    }
-
-    /**
-     * Hides the notification icon in the status bar if it's visible.
-     */
-    /*private void RemoveNotification() {
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
-    }*/
-
-    /**
-     * Shows a notification icon in the status bar for GPS Logger
-     */
-    /*private void ShowNotification() {
-
-        Intent stopLoggingIntent = new Intent(this, GpsLoggingService.class);
-        stopLoggingIntent.setAction("NotificationButton_STOP");
-        stopLoggingIntent.putExtra(IntentConstants.IMMEDIATE_STOP, true);
-        PendingIntent piStop = PendingIntent.getService(this, 0, stopLoggingIntent, 0);
-
-        Intent annotateIntent = new Intent(this, NotificationAnnotationActivity.class);
-        annotateIntent.setAction("com.umaps.gpslogger.NOTIFICATION_BUTTON");
-        PendingIntent piAnnotate = PendingIntent.getActivity(this,0, annotateIntent,0);
-
-        // What happens when the notification item is clicked
-        Intent contentIntent = new Intent(this, GpsMainActivity.class);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntent(contentIntent);
-
-        PendingIntent pending = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-        NumberFormat nf = new DecimalFormat("###.#####");
-
-        String contentText = getString(R.string.gpslogger_still_running);
-        long notificationTime = System.currentTimeMillis();
-
-        if (Session.hasValidLocation()) {
-            contentText = getString(R.string.txt_latitude_short) + ": " + nf.format(Session.getCurrentLatitude()) + ", "
-                    + getString(R.string.txt_longitude_short) + ": " + nf.format(Session.getCurrentLongitude());
-
-            notificationTime = Session.getCurrentLocationInfo().getTime();
-        }
-
-        if (nfc == null) {
-            nfc = new NotificationCompat.Builder(getApplicationContext())
-                    .setSmallIcon(R.drawable.notification)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.gpsloggericon3))
-                    .setPriority(Notification.PRIORITY_MAX)
-                    .setContentTitle(contentText)
-                    .setOngoing(true)
-                    .setContentIntent(pending);
-
-            if(!AppSettings.shouldHideNotificationButtons()){
-                nfc.addAction(R.drawable.annotate2, getString(R.string.menu_annotate), piAnnotate)
-                        .addAction(android.R.drawable.ic_menu_close_clear_cancel, getString(R.string.shortcut_stop), piStop);
-            }
-        }
-
-
-
-        nfc.setContentTitle(contentText);
-        nfc.setContentText(getString(R.string.app_name));
-        nfc.setWhen(notificationTime);
-
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, nfc.build());
-    }*/
-
-    private void StartPassiveManager() {
-        if(AppSettings.getChosenListeners().contains("passive")){
-            Log.d(TAG, "Starting passive location listener");
-            if(passiveLocationListener== null){
-                passiveLocationListener = new GeneralLocationListener(this, "PASSIVE");
-            }
-            passiveLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            passiveLocationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 0, passiveLocationListener);
-        }
     }
 
     /**
@@ -514,8 +433,8 @@ public class GpsLoggingService extends Service  {
     }
 
     private boolean userHasBeenStillForTooLong() {
-        return !Session.hasDescription() /*&& !Session.isSinglePointMode() */&&
-                (Session.getUserStillSinceTimeStamp() > 0 && (System.currentTimeMillis() - Session.getUserStillSinceTimeStamp()) > (AppSettings.getMinimumSeconds() * 1000));
+        return (Session.getUserStillSinceTimeStamp() > 0 &&
+                (System.currentTimeMillis() - Session.getUserStillSinceTimeStamp()) > (AppSettings.getMinimumSeconds() * 1000));
     }
 
     private void startAbsoluteTimer() {
@@ -567,12 +486,12 @@ public class GpsLoggingService extends Service  {
 
     }
 
-    private void StopPassiveManager(){
-        if(passiveLocationManager!=null){
-            Log.d(TAG, "Removing passiveLocationManager updates");
-            passiveLocationManager.removeUpdates(passiveLocationListener);
-        }
-    }
+//    private void StopPassiveManager(){
+//        if(passiveLocationManager!=null){
+//            Log.d(TAG, "Removing passiveLocationManager updates");
+//            passiveLocationManager.removeUpdates(passiveLocationListener);
+//        }
+//    }
 
     void SetLocationServiceUnavailable(){
         EventBus.getDefault().post(new ServiceEvents.LocationServicesUnavailable());
@@ -612,11 +531,10 @@ public class GpsLoggingService extends Service  {
 
         long currentTimeStamp = System.currentTimeMillis();
 
-        Log.d(TAG, "Has description? " + Session.hasDescription() + ", Last timestamp: " + Session.getLatestTimeStamp());
-
+        //Log.d(TAG, "Has description? " + Session.hasDescription() + ", Last timestamp: " + Session.getLatestTimeStamp());
         // Don't log a point until the user-defined time has elapsed
         // However, if user has set an annotation, just log the point, disregard any filters
-        if (!Session.hasDescription() && (currentTimeStamp - Session.getLatestTimeStamp()) < (AppSettings.getMinimumSeconds() * 1000)) {
+        if ((currentTimeStamp - Session.getLatestTimeStamp()) < (AppSettings.getMinimumSeconds() * 1000)) {
             return;
         }
 
@@ -636,7 +554,7 @@ public class GpsLoggingService extends Service  {
 
         // Don't do anything until the user-defined accuracy is reached
         // However, if user has set an annotation, just log the point, disregard any filters
-        if (!Session.hasDescription() &&  AppSettings.getMinimumAccuracyInMeters() > 0) {
+        if (AppSettings.getMinimumAccuracyInMeters() > 0) {
 
             //Don't apply the retry interval to passive locations
             if (!isPassiveLocation && AppSettings.getMinimumAccuracyInMeters() < Math.abs(loc.getAccuracy())) {
@@ -668,7 +586,7 @@ public class GpsLoggingService extends Service  {
 
         //Don't do anything until the user-defined distance has been traversed
         // However, if user has set an annotation, just log the point, disregard any filters
-        if (!Session.hasDescription() && AppSettings.getMinimumDistanceInMeters() > 0 && Session.hasValidLocation()) {
+        if (AppSettings.getMinimumDistanceInMeters() > 0 && Session.hasValidLocation()) {
 
             double distanceTraveled = Utilities.CalculateDistance(loc.getLatitude(), loc.getLongitude(),
                     Session.getCurrentLatitude(), Session.getCurrentLongitude());
@@ -778,21 +696,12 @@ public class GpsLoggingService extends Service  {
      * @param loc Location object
      */
     private void WriteToFile(Location loc) {
-        Session.setAddNewTrackSegment(false);
-
         try {
-            Log.d(TAG, "Calling file writers");
             FileLoggerFactory.Write(getApplicationContext(), loc);
-
-            if (Session.hasDescription()) {
-                Log.i(TAG, "Writing annotation: " + Session.getDescription());
-                FileLoggerFactory.Annotate(getApplicationContext(), Session.getDescription(), loc);
-            }
         } catch(Exception e){
              Log.e(TAG, getString(R.string.could_not_write_to_file), e);
         }
 
-        Session.clearDescription();
         EventBus.getDefault().post(new ServiceEvents.AnnotationStatus(true));
     }
 
@@ -850,10 +759,8 @@ public class GpsLoggingService extends Service  {
         final String desc = Utilities.CleanDescription(annotate.annotation);
         if (desc.length() == 0) {
             Log.d(TAG, "Clearing annotation");
-            Session.clearDescription();
         } else {
             Log.d(TAG, "Pending annotation: " + desc);
-            Session.setDescription(desc);
             EventBus.getDefault().post(new ServiceEvents.AnnotationStatus(false));
 
             if(Session.isStarted()){

@@ -160,14 +160,6 @@ public class AppSettings extends Application {
         AppSettings.minimumAccuracy = minimumAccuracy;
     }
 
-    public static boolean shouldLogToOpenGTS() {
-        return logToOpenGts;
-    }
-
-    public static void setLogToOpenGts(boolean logToOpenGts) {
-        AppSettings.logToOpenGts = logToOpenGts;
-    }
-
     public static boolean isOpenGtsAutoSendEnabled() {
         return openGtsAutoSendEnabled;
     }
@@ -222,14 +214,6 @@ public class AppSettings extends Application {
 
     public static void setAbsoluteTimeout(int absoluteTimeout) {
         AppSettings.absoluteTimeout = absoluteTimeout;
-    }
-
-    public static String getOpenGTSAccountName() {
-        return openGTSAccountName;
-    }
-
-    public static void setOpenGTSAccountName(String openGTSAccountName) {
-        AppSettings.openGTSAccountName = openGTSAccountName;
     }
 
     public static void setChosenListeners(Set<String> chosenListeners) {

@@ -80,8 +80,6 @@ public class Utilities {
 
         AppSettings.setUseImperial(prefs.getBoolean("useImperial", false));
 
-        AppSettings.setLogToOpenGts(prefs.getBoolean("log_opengts", false));
-
         Set<String> listeners = new HashSet<String>(GetListeners());
         AppSettings.setChosenListeners(prefs.getStringSet("listeners", listeners));
 
@@ -132,12 +130,11 @@ public class Utilities {
         //AppSettings.setOpenGTSServerCommunicationMethod(prefs.getString("opengts_server_communication_method", ""));
         //AppSettings.setOpenGTSServerPath(prefs.getString("autoopengts_server_path", ""));
         AppSettings.setOpenGtsAutoSendEnabled(true);
-        AppSettings.setOpenGTSServer("dcs.umaps.vn");
-        AppSettings.setOpenGTSServerPort("8080");
-        AppSettings.setOpenGTSServerCommunicationMethod("HTTP");
+        AppSettings.setOpenGTSServer("dcs.gpshandle.com");
+        AppSettings.setOpenGTSServerPort("55050");
+        AppSettings.setOpenGTSServerCommunicationMethod("UDP");
         AppSettings.setOpenGTSServerPath("gprmc/Data");
-        AppSettings.setOpenGTSDeviceId(prefs.getString("opengts_device_id", "")); //TODO getImei
-        AppSettings.setOpenGTSAccountName(prefs.getString("opengts_accountname","")); //fixed account-name
+        AppSettings.setOpenGTSDeviceId(AppSettings.getImei());
 
         String absoluteTimeoutString = prefs.getString("absolute_timeout",
                 "120");

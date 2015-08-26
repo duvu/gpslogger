@@ -126,10 +126,11 @@ public class OpenGTSClient {
 
     public void sendRAW(String id, String accountName, SerializableLocation[] locations) throws Exception {
         for (SerializableLocation loc : locations) {
-            if(Utilities.IsNullOrEmpty(accountName)){
-                accountName = id;
-            }
+//            if(Utilities.IsNullOrEmpty(accountName)){
+//                accountName = id;
+//            }
             String message = accountName + "/" + id + "/" + GPRMCEncode(loc);
+//            String message = id + "," + GPRMCEncode(loc);
                 DatagramSocket socket = new DatagramSocket();
                 byte[] buffer = message.getBytes();
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(server), port);

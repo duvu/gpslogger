@@ -32,33 +32,19 @@ public class Session extends Application {
     private static boolean gpsEnabled;
     private static boolean isStarted;
     private static boolean isUsingGps;
-//    private static String currentFileName;
     private static int satellites;
     private static boolean notificationVisible;
-//    private static float autoSendDelay;
     private static long startTimeStamp;
     private static long latestTimeStamp;
-    private static boolean addNewTrackSegment = true;
     private static Location currentLocationInfo;
     private static Location previousLocationInfo;
     private static double totalTravelled;
     private static int numLegs;
     private static boolean isBound;
-    private static String description = "";
-//    private static boolean isSinglePointMode = false;
     private static int retryTimeout = 0;
     private static boolean waitingForLocation;
     private static boolean annotationMarked;
-//    private static String currentFormattedFileName;
     private static long userStillSinceTimeStamp;
-
-/*    public static boolean isSinglePointMode() {
-        return isSinglePointMode;
-    }
-
-    public static void setSinglePointMode(boolean singlePointMode) {
-        isSinglePointMode = singlePointMode;
-    }*/
 
     // ---------------------------------------------------
 
@@ -245,34 +231,6 @@ public class Session extends Application {
     }
 
     /**
-     * @return whether to create a new track segment
-     */
-    public static boolean shouldAddNewTrackSegment() {
-        return addNewTrackSegment;
-    }
-
-    /**
-     * @param addNewTrackSegment set whether to create a new track segment
-     */
-    public static void setAddNewTrackSegment(boolean addNewTrackSegment) {
-        Session.addNewTrackSegment = addNewTrackSegment;
-    }
-
-    /**
-     * @param autoSendDelay the autoSendDelay to set
-     */
-    /*public static void setAutoSendDelay(float autoSendDelay) {
-        Session.autoSendDelay = autoSendDelay;
-    }
-
-    *//**
-     * @return the autoSendDelay to use for the timer
-     *//*
-    public static float getAutoSendDelay() {
-        return autoSendDelay;
-    }*/
-
-    /**
      * @param currentLocationInfo the latest Location class
      */
     public static void setCurrentLocationInfo(Location currentLocationInfo) {
@@ -298,22 +256,6 @@ public class Session extends Application {
      */
     public static boolean isBoundToService() {
         return isBound;
-    }
-
-    public static boolean hasDescription() {
-        return !(description.length() == 0);
-    }
-
-    public static String getDescription() {
-        return description;
-    }
-
-    public static void clearDescription() {
-        description = "";
-    }
-
-    public static void setDescription(String newDescription) {
-        description = newDescription;
     }
 
     public static void setWaitingForLocation(boolean waitingForLocation) {
