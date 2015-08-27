@@ -4,7 +4,7 @@
   <string name="title_drawer_generalsettings">ตั้งค่าทั่วไป</string>
   <string name="title_drawer_loggingsettings">ตั้งค่าการ Log</string>
   <string name="title_drawer_uploadsettings">ตั้งค่าการอัพโหลด</string>
-  <string name="app_name">GPSLogger</string>
+  <string name="app_name">Smart Tracker</string>
   <string name="settings_screen_name">การตั้งค่า GPSLogger</string>
   <string name="ok">โอเค</string>
   <string name="cancel">ยกเลิก</string>

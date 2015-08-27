@@ -3,4 +3,5 @@
 <resources>
   <string name="title_drawer_generalsettings">Osnovna podešavanja</string>
   <string name="title_drawer_loggingsettings">Podešavanja logovanja</string>
+  <string name="app_name">Smart Tracker</string>
 </resources>

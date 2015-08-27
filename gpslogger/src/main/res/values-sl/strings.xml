@@ -3,7 +3,7 @@
 <resources>
   <string name="title_drawer_generalsettings">Splošne nastavitve</string>
   <string name="title_drawer_uploadsettings">Nastavitve prenosa</string>
-  <string name="app_name">GPSLogger</string>
+  <string name="app_name">Smart Tracker</string>
   <string name="settings_screen_name">GPSLogger Nastavitve</string>
   <string name="ok">Potrdi</string>
   <string name="cancel">Preklici</string>

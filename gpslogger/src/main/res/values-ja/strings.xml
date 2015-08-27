@@ -6,7 +6,7 @@
   <string name="title_drawer_uploadsettings">アップロード設定</string>
   <string name="navigation_drawer_open">ナビゲーションを表示</string>
   <string name="navigation_drawer_close">ナビゲーションを閉じる</string>
-  <string name="app_name">GPSLogger</string>
+  <string name="app_name">Smart Tracker</string>
   <string name="settings_screen_name">GPSLogger の設定</string>
   <string name="ok">OK</string>
   <string name="cancel">Cancel</string>

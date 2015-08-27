@@ -6,7 +6,7 @@
   <string name="title_drawer_uploadsettings">تحميل الإعدادات</string>
   <string name="navigation_drawer_open">فتح درج الملاحة</string>
   <string name="navigation_drawer_close">إغلاق درج الملاحة</string>
-  <string name="app_name">GPSLogger</string>
+  <string name="app_name">Smart Tracker</string>
   <string name="settings_screen_name">إعدادات GPSLogger </string>
   <string name="ok">موافق</string>
   <string name="cancel">إلغاء الأمر</string>
