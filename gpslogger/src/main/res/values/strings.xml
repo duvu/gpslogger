@@ -479,4 +479,6 @@
     <string name="pref_view_map">Map View</string>
     <string name="pref_view_map_description">Show current position in map</string>
     <string name="title_device_id">IMEI/ESN</string>
+    <string name="deviceId_title">Device ID</string>
+    <string name="deviceId_summary">ESN/IMEI that uses to identify the device on server</string>
 </resources>

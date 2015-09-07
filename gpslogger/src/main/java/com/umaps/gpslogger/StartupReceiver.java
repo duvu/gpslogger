@@ -34,20 +34,17 @@ public class StartupReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         try {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            boolean startImmediately = prefs.getBoolean("startonbootup", false);
+            boolean startImmediately = prefs.getBoolean("startonbootup", true);
 
             Log.i(TAG, "Start on bootup - " + String.valueOf(startImmediately));
 
             if (startImmediately) {
-
                 EventBus.getDefault().postSticky(new CommandEvents.RequestStartStop(true));
-
                 Intent serviceIntent = new Intent(context, GpsLoggingService.class);
                 context.startService(serviceIntent);
             }
         } catch (Exception ex) {
             Log.e(TAG, "StartupReceiver", ex);
-
         }
 
     }

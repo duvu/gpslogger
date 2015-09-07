@@ -199,7 +199,7 @@ public class GpsMainActivity extends ActionBarActivity
         helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), InformationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainPreferenceActivity.class);
                 startActivity(intent);
             }
         });
@@ -219,18 +219,6 @@ public class GpsMainActivity extends ActionBarActivity
         return null;
     }
 
-    /*@Override
-    public boolean onNavigationItemSelected(int position, long itemId) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("SPINNER_SELECTED_POSITION", position);
-        editor.apply();
-
-        LoadFragmentView(position);
-        return true;
-    }*/
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         SetBulbStatus(Session.isStarted());
@@ -247,97 +235,10 @@ public class GpsMainActivity extends ActionBarActivity
         Log.d(TAG, "Menu Item: " + String.valueOf(item.getTitle()));
 
         switch (id) {
-            /*case R.id.mnuAnnotate:
-                //Annotate();
-                LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OPENGTS);
-                return true;
-            case R.id.mnuOnePoint:
-                LogSinglePoint();
-                return true;
-            case R.id.mnuShare:
-                Share();
-                return true;
-            case R.id.mnuOpenGTS:
-                SendToOpenGTS();
-                return true;*/
             default:
                 return true;
         }
     }
-
-
-
-    /*private void SendToOpenGTS() {
-        if (!Utilities.IsOpenGTSSetup()) {
-            LaunchPreferenceScreen(MainPreferenceActivity.PreferenceConstants.OPENGTS);
-        } else {
-            IFileSender fs = FileSenderFactory.GetOpenGTSSender(getApplicationContext());
-            //ShowFileListDialog(fs);
-        }
-    }*/
-
-    /*private void ShowFileListDialog(final IFileSender sender) {
-
-        if (!Utilities.isNetworkAvailable(this)) {
-            Utilities.MsgBox(getString(R.string.sorry),getString(R.string.no_network_message), this);
-            return;
-        }
-
-        final File gpxFolder = new File(AppSettings.getGpsLoggerFolder());
-
-        if (gpxFolder != null && gpxFolder.exists() && Utilities.GetFilesInFolder(gpxFolder, sender).length > 0) {
-            File[] enumeratedFiles = Utilities.GetFilesInFolder(gpxFolder, sender);
-
-            //Order by last modified
-            Arrays.sort(enumeratedFiles, new Comparator<File>() {
-                public int compare(File f1, File f2) {
-                    if (f1 != null && f2 != null) {
-                        return -1 * Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
-                    }
-                    return -1;
-                }
-            });
-
-            List<String> fileList = new ArrayList<String>(enumeratedFiles.length);
-
-            for (File f : enumeratedFiles) {
-                fileList.add(f.getName());
-            }
-
-            final String[] files = fileList.toArray(new String[fileList.size()]);
-
-            new MaterialDialog.Builder(this)
-                    .title(R.string.osm_pick_file)
-                    .items(files)
-                    .positiveText(R.string.ok)
-                    .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
-                        @Override
-                        public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
-
-                            List<Integer> selectedItems = Arrays.asList(integers);
-
-                            List<File> chosenFiles = new ArrayList<File>();
-
-                            for (Object item : selectedItems) {
-                                Log.i(TAG, "Selected file to upload- " + files[Integer.valueOf(item.toString())]);
-                                chosenFiles.add(new File(gpxFolder, files[Integer.valueOf(item.toString())]));
-                            }
-
-                            if (chosenFiles.size() > 0) {
-                                Utilities.ShowProgress(GpsMainActivity.this, getString(R.string.please_wait),
-                                        getString(R.string.please_wait));
-                                userInvokedUpload = true;
-                                sender.UploadFile(chosenFiles);
-
-                            }
-                            return true;
-                        }
-                    }).show();
-
-        } else {
-            Utilities.MsgBox(getString(R.string.sorry), getString(R.string.no_files_found), this);
-        }
-    }*/
 
     /**
      * Provides a connection to the GPS Logging Service

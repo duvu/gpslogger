@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.umaps.gpslogger.InformationActivity"
+        <activity android:name="com.umaps.gpslogger.MainPreferenceActivity"
             android:parentActivityName="com.umaps.gpslogger.GpsMainActivity">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"

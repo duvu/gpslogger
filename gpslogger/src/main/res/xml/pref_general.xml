@@ -1,62 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:key="gpslogger_preferences">
-
-
-
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="gpslogger_preferences"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <com.umaps.gpslogger.views.component.CustomSwitchPreference
         android:title="@string/startonbootup_title"
         android:summary="@string/startonbootup_summary"
         android:key="startonbootup"/>
-    <com.umaps.gpslogger.views.component.CustomSwitchPreference
-        android:title="@string/display_imperial_title"
-        android:summary="@string/display_imperial_summary"
-        android:key="useImperial"/>
-
-    <com.umaps.gpslogger.views.component.CustomSwitchPreference
-        android:title="@string/hide_notification_buttons"
-        android:summary="@string/hide_notification_buttons_summary"
-        android:key="hide_notification_buttons"
-        >
-    </com.umaps.gpslogger.views.component.CustomSwitchPreference>
     <Preference
         android:title="@string/enabledisablegps_title"
         android:summary="@string/enabledisablegps_summary"
         android:key="enableDisableGps"
         android:defaultValue="false"/>
-
-    <com.umaps.gpslogger.views.component.CustomSwitchPreference
-        android:title="@string/debuglog_title"
-        android:summary="@string/debuglog_summary"
-        android:key="debugtofile"
-        android:defaultValue="false"/>
-
-
-    <!--<Preference android:key="about_version_info"></Preference>
-
     <Preference
-        android:key="gpsvisualizer_link"
-        android:title="@string/pref_gpsvisualizer"
-        android:summary=""
-        android:icon="@drawable/gpsvisualizer"
-        />
-
-
-    <Preference
-        android:key="gpsloggerdonate_link"
-        android:title="@string/donate_app"
-        android:icon="@drawable/gpsloggericon3" >
-        <intent android:action="android.intent.action.VIEW"
-                android:data="market://details?id=com.mendhak.gpsloggerpro" />
-        </Preference>
-
-
-    <Preference
-        android:key="bitcoindonate_link"
-        android:title="@string/donate_bitcoin"
-        android:icon="@drawable/bitcoin" >
-
-        </Preference>-->
-
-
+        android:title="@string/deviceId_title"
+        android:summary="@string/deviceId_summary"
+        android:key="deviceId"
+        android:layout="@layout/pref_infomation"/>
 </PreferenceScreen>
